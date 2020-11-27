@@ -10,11 +10,11 @@ else: ?>
 	<title><?php echo (isset($headmeta_title)?$headmeta_title.' &raquo; ':'').'Wildfire Entity'; ?></title>
 	<meta name="description" content="Access authorisation<?php echo (isset($headmeta_title)?' for '.$headmeta_title:''); ?>">
 	<link rel="stylesheet" href="https://use.typekit.net/xkh7dxd.css">
-	<link href="<?php echo BASE_URL; ?>/admin/css/bootstrap.min.css" rel="stylesheet">
-	<link href="<?php echo BASE_URL; ?>/admin/css/wildfire.css" rel="stylesheet">
+	<link href="<?php echo $dash->get_dir_url(); ?>/admin/css/bootstrap.min.css" rel="stylesheet">
+	<link href="<?php echo $dash->get_dir_url(); ?>/admin/css/wildfire.css" rel="stylesheet">
 	<link href="/plugins/fontawesome/css/all.min.css" rel="stylesheet">
-	<link href="<?php echo BASE_URL; ?>/admin/css/custom.css" rel="stylesheet">
-  	<link href="<?php echo BASE_URL; ?>/admin/css/user.css" rel="stylesheet">
+	<link href="<?php echo $dash->get_dir_url(); ?>/admin/css/custom.css" rel="stylesheet">
+  	<link href="<?php echo $dash->get_dir_url(); ?>/admin/css/user.css" rel="stylesheet">
 </head>
 
 <body class="text-center">
