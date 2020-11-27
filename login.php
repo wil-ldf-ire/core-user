@@ -17,7 +17,7 @@ else if ($_SESSION['user']['id']) {
 	$dash->after_login($user['role_slug'], (isset($_POST['redirect_url'])?$_POST['redirect_url']:''));
 }
 
-include_once (ABSOLUTE_PATH.'/user/header.php');
+include_once (__DIR__.'/header.php');
 
 if (($types['webapp']['user_theme']??false) && file_exists(THEME_PATH.'/user-login.php')):
 	include_once (THEME_PATH.'/user-login.php');
@@ -40,4 +40,4 @@ else: ?>
 
 <?php endif; ?>
 
-<?php include_once (ABSOLUTE_PATH.'/user/footer.php'); ?>
+<?php include_once (__DIR__.'/footer.php'); ?>
