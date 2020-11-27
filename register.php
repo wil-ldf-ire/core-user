@@ -1,5 +1,5 @@
 <?php
-include_once ('../init.php');
+include_once ('../../../tribe.init.php');
 
 $error_op='';
 if ($_SESSION['user']['id']) {
