@@ -1,6 +1,6 @@
 <?php
 include_once ('../../../tribe.init.php');
-include_once (ABSOLUTE_PATH.'/user/header.php');
+include_once (__DIR__.'/header.php');
 
 if ($_POST['password'] && ($_POST['password']==$_POST['cpassword'])) {
 	$dash->push_content_meta($session_user['id'], 'password', md5($_POST['password']));
@@ -39,4 +39,4 @@ else: ?>
 
 <?php endif; ?>
 
-<?php include_once (ABSOLUTE_PATH.'/user/footer.php'); ?>
+<?php include_once (__DIR__.'/footer.php'); ?>

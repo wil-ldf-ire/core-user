@@ -1,6 +1,6 @@
 <?php
 include_once ('../../../tribe.init.php');
-include_once (ABSOLUTE_PATH.'/user/header.php');
+include_once (__DIR__.'/header.php');
 
 if (!$_SESSION['user']['id']) {header ('Location: /user/login'); die();}
 
@@ -10,4 +10,4 @@ else:
 	include_once (THEME_PATH.'/404.php');
 endif; ?>
 
-<?php include_once (ABSOLUTE_PATH.'/user/footer.php'); ?>
+<?php include_once (__DIR__.'/footer.php'); ?>

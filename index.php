@@ -3,7 +3,7 @@ include_once ('../../../tribe.init.php');
 
 if (!$_SESSION['user']['id']) {ob_start(); header ('Location: /user/login'); die();}
 
-include_once (ABSOLUTE_PATH.'/user/header.php');
+include_once (__DIR__.'/header.php');
 
 if (($types['webapp']['user_theme']??false) && file_exists(THEME_PATH.'/user-index.php')):
 	
@@ -11,4 +11,4 @@ if (($types['webapp']['user_theme']??false) && file_exists(THEME_PATH.'/user-ind
 
 endif; ?>
 
-<?php include_once (ABSOLUTE_PATH.'/user/footer.php'); ?>
+<?php include_once (__DIR__.'/footer.php'); ?>

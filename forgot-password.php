@@ -1,6 +1,6 @@
 <?php
 include_once ('../../../tribe.init.php');
-include_once (ABSOLUTE_PATH.'/user/header.php');
+include_once (__DIR__.'/header.php');
 ?>
 
 <div class="col-12 col-md-9 col-lg-6 mx-auto">
@@ -9,7 +9,7 @@ include_once (ABSOLUTE_PATH.'/user/header.php');
 if ($_POST['email'] && !$_POST['password']) {
 	$usr=$dash->get_content($sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.type' = 'user' && `content`->'$.email' = '".trim($_POST['email'])."' ORDER BY `id` DESC LIMIT 1")[0]['id']);
 
-	include_once(ABSOLUTE_PATH.'/plugins/sendgrid/core-plugin.php');
+	include_once(__DIR__.'/plugins/sendgrid/core-plugin.php');
 	$mailr=array();
 	$code=uniqid().time();
 	$dash->push_content_meta($usr['id'], 'password_reset_code', $code);
@@ -70,4 +70,4 @@ else { ?>
 
 </div>
 
-<?php include_once (ABSOLUTE_PATH.'/user/footer.php'); ?>
+<?php include_once (__DIR__.'/footer.php'); ?>
