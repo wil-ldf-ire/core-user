@@ -1,6 +1,10 @@
 <?php
 include_once ('../../../tribe.init.php');
-if ($_GET['action']=='exit') {session_destroy(); ob_start(); header('Location: '.BASE_URL.'/user/login');}
+if ($_GET['action']=='exit') {
+	session_destroy();
+	ob_start();
+	header('Location: '.BASE_URL.'/user/login');
+}
 
 if (($_POST['email'] || $_POST['mobile']) && $_POST['password']) {
 	if ($_POST['email'])
