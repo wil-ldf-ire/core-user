@@ -6,20 +6,25 @@ if ($_POST['password'] && ($_POST['password']==$_POST['cpassword'])) {
 	$dash->push_content_meta($session_user['id'], 'password', md5($_POST['password']));
 
 	//for admin and crew (staff)
-	if ($session_user['role']=='admin' || $session_user['role']=='crew')
+	if ($session_user['role']=='admin' || $session_user['role']=='crew') {
 		header('Location: /admin');
-
-	//for members
-	else if ($session_user['role']=='member')
+	} elseif ($session_user['role']=='member') { //for members
 		header('Location: /user');
-
-	//for visitors and anybody else
-	else 
+	} else { //for visitors and anybody else
 		header('Location: /');
+	}
 }
 
-if (($types['webapp']['user_theme']??false) && file_exists(THEME_PATH.'/user-change-password.php')):
-	include_once (THEME_PATH.'/user-change-password.php');
+if (
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH.'/pages/user/change-password.php')
+):
+	include_once THEME_PATH.'/pages/user/change-password.php';
+elseif (
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH.'/user-change-password.php')
+):
+	include_once THEME_PATH.'/user-change-password.php';
 else: ?>
 
 <form class="form-user" method="post" action="/user/change-password"><h2><?php echo $menus['main']['logo']['name']; ?></h2>
