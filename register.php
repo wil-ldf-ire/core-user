@@ -11,7 +11,7 @@ else if (($_POST['email'] || $_POST['mobile']) && $_POST['password'] && ($_POST[
 		$q=$sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='".$_POST['email']."' && `content`->'$.password'='".md5($_POST['password'])."' && `content`->'$.type'='user'");
 	elseif ($_POST['mobile'])
 		$q=$sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='".$_POST['mobile']."' && `content`->'$.password'='".md5($_POST['password'])."' && `content`->'$.type'='user'");
-	
+
 	if ($q[0]['id']) {
 		$user=$dash->get_content($q[0]['id']);
 	}
@@ -27,8 +27,16 @@ else if ($_POST) {
 
 include_once (__DIR__.'/header.php');
 
-if (($types['webapp']['user_theme']??false) && file_exists(THEME_PATH.'/user-register.php')):
-	include_once (THEME_PATH.'/user-register.php');
+if (
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH.'/pages/user/register.php')
+):
+	include_once THEME_PATH.'/pages/user/register.php';
+elseif (
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH.'/user-register.php')
+):
+	include_once THEME_PATH.'/user-register.php';
 else: ?>
 
 <?php echo ($error_op??''); ?>

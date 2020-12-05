@@ -19,8 +19,16 @@ else if ($_SESSION['user']['id']) {
 
 include_once (__DIR__.'/header.php');
 
-if (($types['webapp']['user_theme']??false) && file_exists(THEME_PATH.'/user-login.php')):
-	include_once (THEME_PATH.'/user-login.php');
+if (
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH.'/pages/user/login.php')
+):
+	include_once THEME_PATH.'/pages/user/login.php';
+elseif (
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH.'/user-login.php')
+):
+	include_once THEME_PATH.'/user-login.php';
 else: ?>
 
 <form class="form-user" method="post" action="/user/login"><h2><?php echo $menus['main']['logo']['name']; ?></h2>
