@@ -1,5 +1,9 @@
 <?php
 $type='user';
+
+$dash = new Wildfire\Core\Dash();
+$types = $dash->getTypes();
+
 if (
 	($types['webapp']['user_theme'] ?? false) &&
 	file_exists(THEME_PATH.'/pages/user/header.php')
@@ -10,7 +14,10 @@ elseif (
 	file_exists(THEME_PATH.'/user-header.php')
 ):
 	include_once THEME_PATH.'/user-header.php';
-else: ?>
+else:
+?>
+
+<!doctype html>
 <html lang="<?= $types['webapp']['lang'] ?>">
 <head>
 	<meta charset="utf-8">
@@ -21,13 +28,14 @@ else: ?>
 		content="Access authorisation<?= isset($headmeta_title) ? ' for '.$headmeta_title : '' ?>"
 	>
 	<link rel="stylesheet" href="https://use.typekit.net/xkh7dxd.css">
-	<link href="<?= $dash->get_dir_url() ?>/css/bootstrap.min.css" rel="stylesheet">
-	<link href="<?= $dash->get_dir_url() ?>/css/wildfire.css" rel="stylesheet">
-	<link href="<?= $dash->get_dir_url() ?>/plugins/fontawesome/css/all.min.css" rel="stylesheet">
-	<link href="<?= $dash->get_dir_url() ?>/css/custom.css" rel="stylesheet">
-  	<link href="<?= $dash->get_dir_url() ?>/css/user.css" rel="stylesheet">
+	<link rel="stylesheet" href="/vendor/wildfire/auth/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vendor/wildfire/auth/css/wildfire.css">
+	<link rel="stylesheet" href="/vendor/wildfire/auth/plugins/fontawesome/css/all.min.css">
+	<link rel="stylesheet" href="/vendor/wildfire/auth/css/custom.css">
+  	<link rel="stylesheet" href="/vendor/wildfire/auth/css/user.css">
 </head>
 
 <body class="text-center">
 	<hr class="hr fixed-top" style="margin:0 !important;">
+
 <?php endif; ?>

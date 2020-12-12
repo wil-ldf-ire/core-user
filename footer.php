@@ -11,9 +11,9 @@ elseif (
 	include_once THEME_PATH.'/user-footer.php';
 else:
 ?>
-	<script src="<?= $dash->get_dir_url() ?>/plugins/jquery.min.js"></script>
-	<script src="<?= $dash->get_dir_url() ?>/plugins/popper/popper.min.js"></script>
-	<script src="<?= $dash->get_dir_url() ?>/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/vendor/wildfire/auth/plugins/jquery.min.js"></script>
+	<script src="/vendor/wildfire/auth/plugins/popper/popper.min.js"></script>
+	<script src="/vendor/wildfire/auth/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
 
