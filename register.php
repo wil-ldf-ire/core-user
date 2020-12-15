@@ -5,12 +5,12 @@ $types = $dash->getTypes();
 
 $error_op = '';
 
-if ($_SESSION['user']['id']) {
+if (($_SESSION['user']['id'] ?? false)) {
 	$user = $dash->get_content($_SESSION['user']['id']);
 	$dash->after_login($user['role_slug'], isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
 } elseif (
-	($_POST['email'] || $_POST['mobile']) &&
-	$_POST['password'] &&
+	(($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) &&
+	($_POST['password'] ?? false) &&
 	($_POST['password'] == $_POST['confirm_password'])
 ) {
 	if ($_POST['email']) {
@@ -47,14 +47,14 @@ else:
 <?=$error_op ?? ''?>
 
 <form class="form-user" method="post" action="/user/register">
-	<h2><?=$menus['main']['logo']['name']?></h2>
+	<h2><?=($menus['main']['logo']['name'] ?? '')?></h2>
 	<h4 class="my-3 font-weight-normal">
 		<span class="fas fa-lock"></span>&nbsp;Register
 	</h4>
 
 <?php
 $type = 'user';
-$role = $types['user']['roles'][$_GET[role]];
+$role = ($types['user']['roles'][$_GET[role]] ?? false);
 if ($role['slug']):
 ?>
     <input type="hidden" name="role_slug" value="<?=$role['slug']?>">
@@ -78,10 +78,10 @@ if ($role['slug']):
 	</p>
 	<p class="text-muted small my-5">
 		<a href="<?=BASE_URL?>">
-			<span class="fas fa-angle-double-left"></span>&nbsp;<?=$menus['main']['logo']['name']?>
+			<span class="fas fa-angle-double-left"></span>&nbsp;<?=($menus['main']['logo']['name'] ?? '')?>
 		</a>
 	</p>
-	<p class="text-muted small my-5">&copy;<?=date('Y') == '2020' ? date('Y') : '2020 - ' . date('Y')?> Wildfire</p>
+	<p class="text-muted small my-5">&copy; <?php echo (date('Y') == '2020' ? date('Y') : '2020 - ' . date('Y')) . ($menus['main']['logo']['name'] ?? 'Wildfire'); ?></p>
 </form>
 
 <?php endif?>
