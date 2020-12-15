@@ -1,38 +1,38 @@
 <?php
 if ($_GET['action'] == 'exit') {
-    session_destroy();
-    ob_start();
-    header('Location: ' . BASE_URL . '/user/login');
+	session_destroy();
+	ob_start();
+	header('Location: ' . BASE_URL . '/user/login');
 }
 
 if (($_POST['email'] || $_POST['mobile']) && $_POST['password']) {
-    if ($_POST['email']) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    } else if ($_POST['mobile']) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    }
+	if ($_POST['email']) {
+		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+	} else if ($_POST['mobile']) {
+		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+	}
 
-    if ($q[0]['id']) {
-        $user = $dash->get_content($q[0]['id']);
-        $dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
-    }
+	if ($q[0]['id']) {
+		$user = $dash->get_content($q[0]['id']);
+		$dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+	}
 } elseif ($_SESSION['user']['id']) {
-    $user = $dash->get_content($_SESSION['user']['id']);
-    $dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+	$user = $dash->get_content($_SESSION['user']['id']);
+	$dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 }
 
 include_once 'header.php';
 
 if (
-    ($types['webapp']['user_theme'] ?? false) &&
-    file_exists(UI_PATH . '/pages/user/login.php')
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH . '/pages/user/login.php')
 ):
-    include_once UI_PATH . '/pages/user/login.php';
+	include_once THEME_PATH . '/pages/user/login.php';
 elseif (
-    ($types['webapp']['user_theme'] ?? false) &&
-    file_exists(UI_PATH . '/user-login.php')
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH . '/user-login.php')
 ):
-    include_once UI_PATH . '/user-login.php';
+	include_once THEME_PATH . '/user-login.php';
 else:
 ?>
 

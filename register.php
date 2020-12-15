@@ -6,42 +6,42 @@ $types = $dash->getTypes();
 $error_op = '';
 
 if ($_SESSION['user']['id']) {
-    $user = $dash->get_content($_SESSION['user']['id']);
-    $dash->after_login($user['role_slug'], isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
+	$user = $dash->get_content($_SESSION['user']['id']);
+	$dash->after_login($user['role_slug'], isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
 } elseif (
 	($_POST['email'] || $_POST['mobile']) &&
 	$_POST['password'] &&
 	($_POST['password'] == $_POST['confirm_password'])
 ) {
-    if ($_POST['email']) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    } elseif ($_POST['mobile']) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    }
+	if ($_POST['email']) {
+		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+	} elseif ($_POST['mobile']) {
+		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+	}
 
-    if ($q[0]['id']) {
-        $user = $dash->get_content($q[0]['id']);
-    } else {
-        $user_id = $dash->push_content($_POST);
-        $user = $dash->get_content($user_id);
-    }
-    $dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+	if ($q[0]['id']) {
+		$user = $dash->get_content($q[0]['id']);
+	} else {
+		$user_id = $dash->push_content($_POST);
+		$user = $dash->get_content($user_id);
+	}
+	$dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 } elseif ($_POST) {
-    $error_op = '<div class="alert alert-danger">Form not submitted. Please try again.</div>';
+	$error_op = '<div class="alert alert-danger">Form not submitted. Please try again.</div>';
 }
 
 include_once 'header.php';
 
 if (
-    ($types['webapp']['user_theme'] ?? false) &&
-    file_exists(THEME_PATH . '/pages/user/register.php')
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH . '/pages/user/register.php')
 ):
-    include_once THEME_PATH . '/pages/user/register.php';
+	include_once THEME_PATH . '/pages/user/register.php';
 elseif (
-    ($types['webapp']['user_theme'] ?? false) &&
-    file_exists(THEME_PATH . '/user-register.php')
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH . '/user-register.php')
 ):
-    include_once THEME_PATH . '/user-register.php';
+	include_once THEME_PATH . '/user-register.php';
 else:
 ?>
 <?=$error_op ?? ''?>
@@ -60,7 +60,7 @@ if ($role['slug']):
     <input type="hidden" name="role_slug" value="<?=$role['slug']?>">
 <?php endif?>
 
-<?php include __DIR__.'/../admin/form.php' ?>
+<?php include __DIR__ . '/../admin/form.php'?>
 
 	<div class="checkbox my-1 small">
 		<label>
@@ -81,7 +81,7 @@ if ($role['slug']):
 			<span class="fas fa-angle-double-left"></span>&nbsp;<?=$menus['main']['logo']['name']?>
 		</a>
 	</p>
-	<p class="text-muted small my-5">&copy;<?=date('Y') == '2020' ? date('Y') : '2020 - '.date('Y')?> Wildfire</p>
+	<p class="text-muted small my-5">&copy;<?=date('Y') == '2020' ? date('Y') : '2020 - ' . date('Y')?> Wildfire</p>
 </form>
 
 <?php endif?>
