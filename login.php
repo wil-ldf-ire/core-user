@@ -1,4 +1,9 @@
 <?php
+$dash = new Wildfire\Core\Dash();
+$sql = new Wildfire\Core\MySQL();
+$types = $dash->getTypes();
+$menus = $dash->getMenus();
+
 if ($_GET['action'] == 'exit') {
 	session_destroy();
 	ob_start();
