@@ -53,7 +53,7 @@ else:
 	<a class="btn btn-sm btn-outline-primary btn-block my-1" href="/user/register">Register</a>
 	<p class="text-muted small my-2"><a href="/user/forgot-password"><span class="fas fa-key"></span>&nbsp;Forgot password?</a></p>
 	<p class="text-muted small my-5"><?php echo '<a href="' . BASE_URL . '"><span class="fas fa-angle-double-left"></span>&nbsp;' . ($menus['main']['logo']['name'] ?? '') . '</a>'; ?></p>
-	<p class="text-muted small my-5">&copy; <?php echo (date('Y') == '2020' ? date('Y') : '2020 - ' . date('Y')) . ($menus['main']['logo']['name'] ?? 'Wildfire'); ?></p>
+	<p class="text-muted small my-5">&copy; <?php echo (date('Y') == '2020 ' ? date('Y') : '2020 - ' . date('Y')) . ($menus['main']['logo']['name'] ?? 'Wildfire'); ?></p>
 </form>
 
 <?php endif;?>

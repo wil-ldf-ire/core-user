@@ -82,7 +82,7 @@ if ($role['slug']):
 			<span class="fas fa-angle-double-left"></span>&nbsp;<?=($menus['main']['logo']['name'] ?? '')?>
 		</a>
 	</p>
-	<p class="text-muted small my-5">&copy; <?php echo (date('Y') == '2020' ? date('Y') : '2020 - ' . date('Y')) . ($menus['main']['logo']['name'] ?? 'Wildfire'); ?></p>
+	<p class="text-muted small my-5">&copy; <?php echo (date('Y') == '2020 ' ? date('Y') : '2020 - ' . date('Y')) . ($menus['main']['logo']['name'] ?? 'Wildfire'); ?></p>
 </form>
 
 <?php endif?>
