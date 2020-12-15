@@ -2,6 +2,7 @@
 $dash = new Wildfire\Core\Dash();
 $sql = new Wildfire\Core\MySQL();
 $types = $dash->getTypes();
+$menus = $dash->getMenus();
 
 $error_op = '';
 
