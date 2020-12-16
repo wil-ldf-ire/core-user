@@ -5,15 +5,15 @@ $dash = new Wildfire\Core\Dash();
 $types = $dash->getTypes();
 
 if (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/pages/user/header.php')
+    ($types['webapp']['user_theme'] ?? false) &&
+    file_exists(THEME_PATH . '/pages/user/header.php')
 ):
-	include_once THEME_PATH . '/pages/user/header.php';
+    include_once THEME_PATH . '/pages/user/header.php';
 elseif (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/user-header.php')
+    ($types['webapp']['user_theme'] ?? false) &&
+    file_exists(THEME_PATH . '/user-header.php')
 ):
-	include_once THEME_PATH . '/user-header.php';
+    include_once THEME_PATH . '/user-header.php';
 else:
 ?>
 
