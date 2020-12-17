@@ -8,7 +8,7 @@ $error_op = '';
 
 if (($_SESSION['user']['id'] ?? false)) {
     $user = $dash->get_content($_SESSION['user']['id']);
-    $dash->after_login($user['role_slug'], isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
+    $dash->after_login($user, isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
 } elseif (
     (($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) &&
     ($_POST['password'] ?? false) &&
@@ -26,7 +26,7 @@ if (($_SESSION['user']['id'] ?? false)) {
         $user_id = $dash->push_content($_POST);
         $user = $dash->get_content($user_id);
     }
-    $dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+    $dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 } elseif ($_POST) {
     $error_op = '<div class="alert alert-danger">Form not submitted. Please try again.</div>';
 }

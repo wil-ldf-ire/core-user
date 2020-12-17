@@ -19,11 +19,11 @@ if ((($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) && ($_POST['pass
 
     if ($q[0]['id']) {
         $user = $dash->get_content($q[0]['id']);
-        $dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+        $dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
     }
 } elseif (($_SESSION['user']['id'] ?? false)) {
     $user = $dash->get_content($_SESSION['user']['id']);
-    $dash->after_login($user['role_slug'], (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+    $dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 }
 
 include_once 'header.php';
