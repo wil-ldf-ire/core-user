@@ -1,47 +1,44 @@
 <?php
-$dash = new Wildfire\Core\Dash();
-$sql = new Wildfire\Core\MySQL();
-$types = $dash->getTypes();
-$menus = $dash->getMenus();
+include_once __DIR__ . '/init.php';
 
 if ($_GET['action'] == 'exit') {
-    session_destroy();
-    ob_start();
-    header('Location: ' . BASE_URL . '/user/login');
+	session_destroy();
+	ob_start();
+	header('Location: ' . BASE_URL . '/user/login');
 }
 
 if ((($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) && ($_POST['password'] ?? false)) {
-    if (($_POST['email'] ?? false)) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    } elseif (($_POST['mobile'] ?? false)) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    }
+	if (($_POST['email'] ?? false)) {
+		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+	} elseif (($_POST['mobile'] ?? false)) {
+		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+	}
 
-    if ($q[0]['id']) {
-        $user = $dash->get_content($q[0]['id']);
-        $dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
-    }
+	if ($q[0]['id']) {
+		$user = $dash->get_content($q[0]['id']);
+		$dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+	}
 } elseif (($_SESSION['user']['id'] ?? false)) {
-    $user = $dash->get_content($_SESSION['user']['id']);
-    $dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+	$user = $dash->get_content($_SESSION['user']['id']);
+	$dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 }
 
-include_once 'header.php';
+include_once __DIR__ . 'header.php';
 
 if (
-    ($types['webapp']['user_theme'] ?? false) &&
-    file_exists(THEME_PATH . '/pages/user/login.php')
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH . '/pages/user/login.php')
 ):
-    include_once THEME_PATH . '/pages/user/login.php';
+	include_once THEME_PATH . '/pages/user/login.php';
 elseif (
-    ($types['webapp']['user_theme'] ?? false) &&
-    file_exists(THEME_PATH . '/user-login.php')
+	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH . '/user-login.php')
 ):
-    include_once THEME_PATH . '/user-login.php';
+	include_once THEME_PATH . '/user-login.php';
 else:
 ?>
 
-<form class="form-user" method="post" action="/user/login"><h2><?php echo($menus['main']['logo']['name'] ?? ''); ?></h2>
+<form class="form-user" method="post" action="/user/login"><h2><?php echo ($menus['main']['logo']['name'] ?? ''); ?></h2>
 	<h4 class="my-3 font-weight-normal"><span class="fas fa-lock"></span>&nbsp;Sign in</h4>
 	<?=($_POST ? '<div class="alert alert-danger">Wrong credentials. Please try again.</div>' : '');?>
 	<label for="inputEmail" class="sr-only">Email address</label>
@@ -53,7 +50,7 @@ else:
 	<a class="btn btn-sm btn-outline-primary btn-block my-1" href="/user/register">Register</a>
 	<p class="text-muted small my-2"><a href="/user/forgot-password"><span class="fas fa-key"></span>&nbsp;Forgot password?</a></p>
 	<p class="text-muted small my-5"><?php echo '<a href="' . BASE_URL . '"><span class="fas fa-angle-double-left"></span>&nbsp;' . ($menus['main']['logo']['name'] ?? '') . '</a>'; ?></p>
-	<p class="text-muted small my-5">&copy; <?php echo(date('Y') == '2020 ' ? date('Y') : '2020 - ' . date('Y')) . ($menus['main']['logo']['name'] ?? 'Wildfire'); ?></p>
+	<p class="text-muted small my-5">&copy; <?php echo (date('Y') == '2020 ' ? date('Y') : '2020 - ' . date('Y')) . ($menus['main']['logo']['name'] ?? 'Wildfire'); ?></p>
 </form>
 
 <?php endif;?>

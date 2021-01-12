@@ -1,24 +1,12 @@
 <?php
-include_once __DIR__ . '/header.php';
+namespace Wildfire\Core;
 
-if (!$_SESSION['user']['id']) {
-	header('Location: /user/login');
-	die();
-}
+$sql = new MySQL();
+$dash = new Dash();
+$admin = new Admin();
+$theme = new Theme();
 
-$dash = new Wildfire\Core\Dash;
+$type = 'user';
 $types = $dash->getTypes();
-
-if ($types['webapp']['user_theme'] ?? false) {
-	if (!$slug) {
-		if (file_exists(__DIR__ . '/index.php')) {
-			include_once __DIR__ . '/index.php';
-		} else {
-			die('file not found');
-		}
-	}
-} else {
-	include_once THEME_PATH . '/errors/404.php';
-}
-
-include_once __DIR__ . '/footer.php';
+$menus = $dash->getMenus();
+$session_user = $dash->getSessionUser();
