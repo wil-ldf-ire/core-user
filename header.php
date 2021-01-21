@@ -1,6 +1,11 @@
 <?php
 if (
 	($types['webapp']['user_theme'] ?? false) &&
+	file_exists(THEME_PATH . '/pages/user/_header.php')
+):
+	include_once THEME_PATH . '/pages/user/_header.php';
+elseif (
+	($types['webapp']['user_theme'] ?? false) &&
 	file_exists(THEME_PATH . '/pages/user/header.php')
 ):
 	include_once THEME_PATH . '/pages/user/header.php';
