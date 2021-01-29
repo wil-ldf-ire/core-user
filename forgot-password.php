@@ -1,6 +1,6 @@
 <?php
 include_once __DIR__ . '/init.php';
-include_once __DIR__ . 'header.php';
+include_once __DIR__ . '/header.php';
 ?>
 
 <div class="col-12 col-md-9 col-lg-6 mx-auto">

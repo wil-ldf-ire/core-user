@@ -27,7 +27,7 @@ if (($_SESSION['user']['id'] ?? false)) {
 	$error_op = '<div class="alert alert-danger">Form not submitted. Please try again.</div>';
 }
 
-include_once __DIR__ . 'header.php';
+include_once __DIR__.'/header.php';
 
 if (
 	($types['webapp']['user_theme'] ?? false) &&
@@ -83,4 +83,4 @@ if ($role['slug']):
 
 <?php endif?>
 
-<?php include_once __DIR__ . 'footer.php'?>
+<?php include_once __DIR__ . '/footer.php'?>
