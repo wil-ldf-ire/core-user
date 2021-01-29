@@ -23,7 +23,7 @@ if ((($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) && ($_POST['pass
 	$dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 }
 
-include_once __DIR__.'/header.php';
+include_once __DIR__.'/includes/_header.php';
 
 if (
 	($types['webapp']['user_theme'] ?? false) &&
@@ -55,4 +55,4 @@ else:
 
 <?php endif;?>
 
-<?php include_once __DIR__ . '/footer.php';?>
+<?php include_once __DIR__.'/includes/_footer.php';?>

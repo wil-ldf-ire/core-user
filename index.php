@@ -7,7 +7,7 @@ if (!$session_user['id']) {
 	die();
 }
 
-include_once __DIR__ . '/header.php';
+include_once __DIR__ . '/includes/_header.php';
 
 if (($types['webapp']['user_theme'] ?? false)) {
 	if (file_exists(THEME_PATH . '/pages/user/index.php')) {
@@ -22,4 +22,4 @@ if (($types['webapp']['user_theme'] ?? false)) {
 	include_once __DIR__ . '/index.php';
 }
 
-include_once __DIR__ . '/footer.php';
+include_once __DIR__.'/includes/_footer.php';

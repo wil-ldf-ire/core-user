@@ -1,6 +1,6 @@
 <?php
 include_once __DIR__ . '/init.php';
-include_once __DIR__ . '/header.php';
+include_once __DIR__ . '/includes/_header.php';
 
 if ($_POST['password'] && ($_POST['password'] == $_POST['cpassword'])) {
 	$dash->push_content_meta($session_user['id'], 'password', md5($_POST['password']));
@@ -48,4 +48,4 @@ else: ?>
 
 <?php endif;?>
 
-<?php include_once __DIR__ . '/footer.php';?>
+<?php include_once __DIR__.'/includes/_footer.php';?>
