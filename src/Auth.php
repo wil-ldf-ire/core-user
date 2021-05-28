@@ -1,12 +1,12 @@
 <?php
 namespace Wildfire\Auth;
+use Wildfire\Core\Dash as Dash;
 
 class Auth {
 
     protected static $types;
 
     public function __construct() {
-        use Wildfire/Core;
         $dash = new Dash();
         self::$types = $dash->get_types(ABSOLUTE_PATH . '/config/types.json');
     }
