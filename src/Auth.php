@@ -2,6 +2,7 @@
 namespace Wildfire\Auth;
 use Firebase\JWT\JWT as JWT;
 use Wildfire\Core\Dash as Dash;
+use Wildfire\Core\MySQL as MySQL;
 
 class Auth {
 
@@ -53,7 +54,7 @@ class Auth {
         }
 
         if ($access_token) {
-            return (array) JWT::decode($access_token, $_ENV['TRIBE_API_SECRET_KEY'], array('HS256'));
+            return (array) JWT::decode($access_token, ($_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS']), array('HS256'));
         } else {
             return false;
         }
@@ -71,13 +72,13 @@ class Auth {
         );
 
         if ($timeout) {
-            $payload["exp"] = $timeout;
+            $payload["exp"] = time() + $timeout;
         }
         // "exp" (Expiration Time) Claim
 
         $payload = array_merge($payload, $user);
 
-        $jwt_token = JWT::encode($payload, $_ENV['TRIBE_API_SECRET_KEY']);
+        $jwt_token = JWT::encode($payload, ($_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS']));
 
         $_SESSION['access_token'] = $jwt_token;
 
@@ -86,6 +87,18 @@ class Auth {
             "token_type" => "Bearer",
             "user_id" => $user['user_id'],
         );
+    }
+
+    public function getUserId($post) {
+        $sql = new MySQL();
+
+        if (($post['email'] ?? false)) {
+            $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $post['email'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `content`->'$.type'='user'");
+        } elseif (($post['mobile'] ?? false)) {
+            $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $post['mobile'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `content`->'$.type'='user'");
+        }
+
+        return ($q[0]['id'] ?? false);
     }
 }
 
