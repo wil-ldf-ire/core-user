@@ -1,5 +1,6 @@
 <?php
 namespace Wildfire\Auth;
+use Firebase\JWT\JWT as JWT;
 use Wildfire\Core\Dash as Dash;
 
 class Auth {
@@ -21,16 +22,20 @@ class Auth {
 
         //for admin and crew (staff)
         if ($types['user']['roles'][$roleslug]['role'] == 'admin' || $types['user']['roles'][$roleslug]['role'] == 'crew') {
-            $_SESSION['user'] = $user;
-            $_SESSION['user']['wildfire_dashboard_access'] = 1;
+            $user['wildfire_dashboard_access'] = 1;
+            $access_token = $this - setCurrentUser($user);
+            $_SESSION['access_token'] = $access_token;
+
             ob_start();
             header('Location: ' . (trim($redirect_url) ? trim($redirect_url) : '/admin'));
         }
 
         //for members
         elseif ($types['user']['roles'][$roleslug]['role'] == 'member') {
-            $_SESSION['user'] = $user;
-            $_SESSION['user']['wildfire_dashboard_access'] = 0;
+            $user['wildfire_dashboard_access'] = 0;
+            $access_token = $this - setCurrentUser($user);
+            $_SESSION['access_token'] = $access_token;
+
             ob_start();
             header('Location: ' . (trim($redirect_url) ? trim($redirect_url) : '/user'));
         }
@@ -42,9 +47,47 @@ class Auth {
         }
     }
 
-    public function getCurrentUser() {
-        global $_SESSION;
-        return ($_SESSION['user'] ?? null);
+    public function getCurrentUser($access_token = '') {
+        global $_SESSION, $_ENV;
+
+        if (!$access_token) {
+            $access_token = $_SESSION['access_token'];
+        }
+
+        if ($access_token) {
+            return (array) JWT::decode($access_token, $_ENV['TRIBE_API_SECRET_KEY'], array('HS256'));
+        } else {
+            return false;
+        }
+
+    }
+
+    public function setCurrentUser($user, $timeout = 0) {
+        global $_SESSION, $_ENV;
+
+        $payload = array(
+            "iss" => $_ENV['BASE_URL'], //“iss” (Issuer) Claim
+            "aud" => $_ENV['BASE_URL'],
+            "iat" => time(), //"iat" (Issued At) Claim
+            "nbf" => time(), //"nbf" (Not Before) Claim
+        );
+
+        if ($timeout) {
+            $payload["exp"] = $timeout;
+        }
+        // "exp" (Expiration Time) Claim
+
+        $payload = array_merge($payload, $user);
+
+        $jwt_token = JWT::encode($payload, $_ENV['TRIBE_API_SECRET_KEY']);
+
+        $_SESSION['access_token'] = $jwt_token;
+
+        return array(
+            "access_token" => $jwt_token,
+            "token_type" => "Bearer",
+            "user_id" => $user['user_id'],
+        );
     }
 }
 
