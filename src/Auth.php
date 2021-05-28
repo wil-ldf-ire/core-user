@@ -23,7 +23,7 @@ class Auth {
         //for admin and crew (staff)
         if ($types['user']['roles'][$roleslug]['role'] == 'admin' || $types['user']['roles'][$roleslug]['role'] == 'crew') {
             $user['wildfire_dashboard_access'] = 1;
-            $access_token = $this - setCurrentUser($user);
+            $access_token = $this->setCurrentUser($user);
             $_SESSION['access_token'] = $access_token;
 
             ob_start();
@@ -33,7 +33,7 @@ class Auth {
         //for members
         elseif ($types['user']['roles'][$roleslug]['role'] == 'member') {
             $user['wildfire_dashboard_access'] = 0;
-            $access_token = $this - setCurrentUser($user);
+            $access_token = $this->setCurrentUser($user);
             $_SESSION['access_token'] = $access_token;
 
             ob_start();
