@@ -8,16 +8,13 @@ if ($_GET['action'] == 'exit') {
 }
 
 if ((($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) && ($_POST['password'] ?? false)) {
-    if (($_POST['email'] ?? false)) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    } elseif (($_POST['mobile'] ?? false)) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    }
+    $user_id = $auth->getUserId($_POST);
 
-    if ($q[0]['id']) {
-        $user = $dash->get_content($q[0]['id']);
+    if ($user_id) {
+        $user = $dash->get_content($user_id);
         $auth->doAfterLogin($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
     }
+
 } elseif ($currentUser['id'] ?? false) {
     $user = $dash->get_content($currentUser['id']);
     $auth->doAfterLogin($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));

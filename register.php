@@ -10,14 +10,10 @@ if ($currentUser['id'] ?? false) {
     ($_POST['password'] ?? false) &&
     ($_POST['password'] == $_POST['confirm_password'])
 ) {
-    if ($_POST['email']) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    } elseif ($_POST['mobile']) {
-        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-    }
+    $user_id = $auth->getUserId($_POST);
 
-    if ($q[0]['id']) {
-        $user = $dash->get_content($q[0]['id']);
+    if ($user_id) {
+        $user = $dash->get_content($user_id);
     } else {
         $user_id = $dash->push_content($_POST);
         $user = $dash->get_content($user_id);
