@@ -2,8 +2,8 @@
 include_once __DIR__ . '/init.php';
 $error_op = '';
 
-if (($_SESSION['user']['id'] ?? false)) {
-    $user = $dash->get_content($_SESSION['user']['id']);
+if ($currentUser['id'] ?? false) {
+    $user = $dash->get_content($currentUser['id']);
     $auth->doAfterLogin($user, isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
 } elseif (
     (($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) &&

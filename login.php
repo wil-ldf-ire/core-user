@@ -18,8 +18,8 @@ if ((($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) && ($_POST['pass
         $user = $dash->get_content($q[0]['id']);
         $auth->doAfterLogin($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
     }
-} elseif (($_SESSION['user']['id'] ?? false)) {
-    $user = $dash->get_content($_SESSION['user']['id']);
+} elseif ($currentUser['id'] ?? false) {
+    $user = $dash->get_content($currentUser['id']);
     $auth->doAfterLogin($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 }
 
