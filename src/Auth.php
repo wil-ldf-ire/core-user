@@ -1,11 +1,7 @@
 <?php
 namespace Wildfire\Auth;
-use Dotenv\Dotenv as Dotenv;
 use Firebase\JWT\JWT as JWT;
 use Wildfire\Core\Dash as Dash;
-
-$dotenv = Dotenv::createImmutable(__DIR__, '../../../../.env');
-$dotenv->load();
 
 class Auth {
 
@@ -27,8 +23,7 @@ class Auth {
         //for admin and crew (staff)
         if ($types['user']['roles'][$roleslug]['role'] == 'admin' || $types['user']['roles'][$roleslug]['role'] == 'crew') {
             $user['wildfire_dashboard_access'] = 1;
-            $access_token = $this->setCurrentUser($user);
-            $_SESSION['access_token'] = $access_token;
+            $this->setCurrentUser($user);
 
             ob_start();
             header('Location: ' . (trim($redirect_url) ? trim($redirect_url) : '/admin'));
@@ -37,8 +32,7 @@ class Auth {
         //for members
         elseif ($types['user']['roles'][$roleslug]['role'] == 'member') {
             $user['wildfire_dashboard_access'] = 0;
-            $access_token = $this->setCurrentUser($user);
-            $_SESSION['access_token'] = $access_token;
+            $this->setCurrentUser($user);
 
             ob_start();
             header('Location: ' . (trim($redirect_url) ? trim($redirect_url) : '/user'));
