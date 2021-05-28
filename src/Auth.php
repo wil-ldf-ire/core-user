@@ -1,7 +1,11 @@
 <?php
 namespace Wildfire\Auth;
+use Dotenv\Dotenv as Dotenv;
 use Firebase\JWT\JWT as JWT;
 use Wildfire\Core\Dash as Dash;
+
+$dotenv = Dotenv::createImmutable(__DIR__, '../../../../.env');
+$dotenv->load();
 
 class Auth {
 
