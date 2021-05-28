@@ -1,12 +1,12 @@
 <?php
-namespace Wildfire\Core;
+namespace Wildfire;
 
-$sql = new MySQL();
-$dash = new Dash();
-$admin = new Admin();
-$theme = new Theme();
+$sql = new Core\MySQL();
+$dash = new Core\Dash();
+$admin = new Core\Admin();
+$auth = new Auth\Auth();
 
 $type = 'user';
 $types = $dash->getTypes();
 $menus = $dash->getMenus();
-$session_user = $dash->getSessionUser();
+$currentUser = $auth->getCurrentUser();

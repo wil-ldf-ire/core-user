@@ -1,3 +1,8 @@
 {
-    "name": "wildfire/auth"
+    "name": "wildfire/auth",
+    "autoload": {
+        "psr-4": {
+            "Wildfire\\Auth\\": "src/"
+        }
+    }
 }

@@ -3,42 +3,42 @@ include_once __DIR__ . '/init.php';
 $error_op = '';
 
 if (($_SESSION['user']['id'] ?? false)) {
-	$user = $dash->get_content($_SESSION['user']['id']);
-	$dash->after_login($user, isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
+    $user = $dash->get_content($_SESSION['user']['id']);
+    $auth->doAfterLogin($user, isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
 } elseif (
-	(($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) &&
-	($_POST['password'] ?? false) &&
-	($_POST['password'] == $_POST['confirm_password'])
+    (($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) &&
+    ($_POST['password'] ?? false) &&
+    ($_POST['password'] == $_POST['confirm_password'])
 ) {
-	if ($_POST['email']) {
-		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-	} elseif ($_POST['mobile']) {
-		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-	}
+    if ($_POST['email']) {
+        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+    } elseif ($_POST['mobile']) {
+        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+    }
 
-	if ($q[0]['id']) {
-		$user = $dash->get_content($q[0]['id']);
-	} else {
-		$user_id = $dash->push_content($_POST);
-		$user = $dash->get_content($user_id);
-	}
-	$dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+    if ($q[0]['id']) {
+        $user = $dash->get_content($q[0]['id']);
+    } else {
+        $user_id = $dash->push_content($_POST);
+        $user = $dash->get_content($user_id);
+    }
+    $auth->doAfterLogin($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 } elseif ($_POST) {
-	$error_op = '<div class="alert alert-danger">Form not submitted. Please try again.</div>';
+    $error_op = '<div class="alert alert-danger">Form not submitted. Please try again.</div>';
 }
 
-include_once __DIR__.'/includes/_header.php';
+include_once __DIR__ . '/includes/_header.php';
 
 if (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/pages/user/register.php')
+    ($types['webapp']['user_theme'] ?? false) &&
+    file_exists(THEME_PATH . '/pages/user/register.php')
 ):
-	include_once THEME_PATH . '/pages/user/register.php';
+    include_once THEME_PATH . '/pages/user/register.php';
 elseif (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/user-register.php')
+    ($types['webapp']['user_theme'] ?? false) &&
+    file_exists(THEME_PATH . '/user-register.php')
 ):
-	include_once THEME_PATH . '/user-register.php';
+    include_once THEME_PATH . '/user-register.php';
 else:
 ?>
 <?=$error_op ?? ''?>
@@ -83,4 +83,4 @@ if ($role['slug']):
 
 <?php endif?>
 
-<?php include_once __DIR__.'/includes/_footer.php'?>
+<?php include_once __DIR__ . '/includes/_footer.php'?>

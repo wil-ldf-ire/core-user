@@ -2,39 +2,39 @@
 include_once __DIR__ . '/init.php';
 
 if ($_GET['action'] == 'exit') {
-	session_destroy();
-	ob_start();
-	header('Location: ' . BASE_URL . '/user/login');
+    session_destroy();
+    ob_start();
+    header('Location: ' . BASE_URL . '/user/login');
 }
 
 if ((($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) && ($_POST['password'] ?? false)) {
-	if (($_POST['email'] ?? false)) {
-		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-	} elseif (($_POST['mobile'] ?? false)) {
-		$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
-	}
+    if (($_POST['email'] ?? false)) {
+        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $_POST['email'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+    } elseif (($_POST['mobile'] ?? false)) {
+        $q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $_POST['mobile'] . "' && `content`->'$.password'='" . md5($_POST['password']) . "' && `content`->'$.type'='user'");
+    }
 
-	if ($q[0]['id']) {
-		$user = $dash->get_content($q[0]['id']);
-		$dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
-	}
+    if ($q[0]['id']) {
+        $user = $dash->get_content($q[0]['id']);
+        $auth->doAfterLogin($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+    }
 } elseif (($_SESSION['user']['id'] ?? false)) {
-	$user = $dash->get_content($_SESSION['user']['id']);
-	$dash->after_login($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+    $user = $dash->get_content($_SESSION['user']['id']);
+    $auth->doAfterLogin($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
 }
 
-include_once __DIR__.'/includes/_header.php';
+include_once __DIR__ . '/includes/_header.php';
 
 if (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/pages/user/login.php')
+    ($types['webapp']['user_theme'] ?? false) &&
+    file_exists(THEME_PATH . '/pages/user/login.php')
 ):
-	include_once THEME_PATH . '/pages/user/login.php';
+    include_once THEME_PATH . '/pages/user/login.php';
 elseif (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/user-login.php')
+    ($types['webapp']['user_theme'] ?? false) &&
+    file_exists(THEME_PATH . '/user-login.php')
 ):
-	include_once THEME_PATH . '/user-login.php';
+    include_once THEME_PATH . '/user-login.php';
 else:
 ?>
 
@@ -55,4 +55,4 @@ else:
 
 <?php endif;?>
 
-<?php include_once __DIR__.'/includes/_footer.php';?>
+<?php include_once __DIR__ . '/includes/_footer.php';?>
