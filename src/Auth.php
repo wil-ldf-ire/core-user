@@ -49,7 +49,7 @@ class Auth {
     public function getCurrentUser($access_token = '') {
         global $_SESSION, $_ENV;
 
-        if (!isset($access_token)) {
+        if (!$access_token) {
             $access_token = $_SESSION['access_token'];
         }
 
