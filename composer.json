@@ -8,7 +8,7 @@
     },
     "require": {
     	"firebase/php-jwt": "^5.2",
-    	"wildfire/core": "^1.1"
+    	"wildfire/core": "^2.1"
     },
     "autoload": {
         "psr-4": {
