@@ -1,7 +1,14 @@
 {
     "name": "wildfire/auth",
+    "repositories": {
+        "wildfire/core": {
+            "type": "git",
+            "url": "https://github.com/wil-ldf-ire/core.git"
+        }
+    },
     "require": {
-    	"firebase/php-jwt": "^5.2"
+    	"firebase/php-jwt": "^5.2",
+    	"wildfire/core": "^1.1"
     },
     "autoload": {
         "psr-4": {
