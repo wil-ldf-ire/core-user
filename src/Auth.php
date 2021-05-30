@@ -46,6 +46,52 @@ class Auth {
         }
     }
 
+    public function getApiAccess($api_key, $api_secret) {
+        $sql = new MySQL();
+        $types = self::$types;
+
+        $user_id = (string) json_decode($sql->executeSQL("
+            SELECT `content`->'$.user_id' `user_id` FROM `data`
+            WHERE
+            `content`->'$.api_key'='" . $api_key . "' &&
+            `content`->'$.api_secret'='" . $api_secret . "' &&
+            `content`->'$.type'='api_key_secret'")[0]['user_id'], true);
+
+        $user = $this->getUser($user_id);
+        $roleslug = $user['role_slug'];
+        $user['role'] = $types['user']['roles'][$roleslug]['role'];
+
+        //for admin and crew (staff)
+        if ($types['user']['roles'][$roleslug]['role'] == 'admin' || $types['user']['roles'][$roleslug]['role'] == 'dev') {
+            return $this->setCurrentUser($user, 900);
+        } else {
+            return false;
+        }
+
+    }
+
+    public function getUser($val) {
+        $sql = new MySQL();
+        $or = array();
+
+        if (is_int($val)) {
+            $q = $sql->executeSQL("SELECT * FROM `data` WHERE `id`='$val' && `content`->'$.type'='user'");
+        } else {
+            $q = $sql->executeSQL("SELECT * FROM `data` WHERE `content`->'$.user_id'='$val' && `content`->'$.type'='user'");
+        }
+
+        if ($q[0]['id']) {
+            $or = json_decode($q[0]['content'], true);
+            $or['id'] = $q[0]['id'];
+            $or['updated_on'] = $q[0]['updated_on'];
+            $or['created_on'] = $q[0]['created_on'];
+            return $or;
+        } else {
+            return 0;
+        }
+
+    }
+
     public function getCurrentUser($access_token = '') {
         global $_SESSION, $_ENV;
 
