@@ -61,7 +61,7 @@ class Auth {
         $roleslug = $user['role_slug'];
         $user['role'] = $types['user']['roles'][$roleslug]['role'];
 
-        //for admin and crew (staff)
+        //for admin and dev (staff)
         if ($types['user']['roles'][$roleslug]['role'] == 'admin' || $types['user']['roles'][$roleslug]['role'] == 'dev') {
             return $this->setCurrentUser($user, 900);
         } else {
