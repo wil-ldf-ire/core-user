@@ -100,7 +100,20 @@ class Auth {
         }
 
         if ($access_token) {
-            return (array) JWT::decode($access_token, ($_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS']), array('HS256'));
+
+            try {
+                $decoded = JWT::decode($access_token, ($_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS']), array('HS256'));
+            } catch (Exception $e) {
+                if ($e->getMessage() == "Expired token") {
+                    return 'expired';
+
+                } else {
+                    return false;
+                }
+            }
+
+            return (array) $decoded;
+
         } else {
             return false;
         }
