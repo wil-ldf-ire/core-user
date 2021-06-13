@@ -1,6 +1,6 @@
 <?php
 namespace Wildfire\Auth;
-use Firebase\JWT\JWT as JWT;
+use \Firebase\JWT\JWT as JWT;
 use Wildfire\Core\Dash as Dash;
 use Wildfire\Core\MySQL as MySQL;
 
@@ -96,7 +96,7 @@ class Auth {
         global $_SESSION, $_ENV;
 
         if (!$access_token) {
-            $access_token = $_SESSION['access_token'];
+            $access_token = $_SESSION['access_token'] ?? false;
         }
 
         if ($access_token) {

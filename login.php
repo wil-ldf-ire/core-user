@@ -1,7 +1,10 @@
 <?php
 require_once __DIR__.'/init.php';
 
-if ($_GET['action'] == 'exit') {
+if (
+    isset($_GET['action']) &&
+    $_GET['action'] == 'exit'
+) {
     session_destroy();
     ob_start();
     header("Location: /user/login");
