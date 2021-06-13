@@ -6,7 +6,7 @@ $app_title = $menus['main']['logo']['name'] ?? '';
 $redirect_url = isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '';
 $form_email = $_POST['email'] ?? false;
 $form_mobile = $_POST['mobile'] ?? false;
-$form_password = $_POST['password'];
+$form_password = $_POST['password'] ?? false;
 
 if ($currentUser['id'] ?? false) {
     $user = $dash->get_content($currentUser['id']);
@@ -55,7 +55,11 @@ else:
 
 <?php
 $type = 'user';
-$role = ($types['user']['roles'][$_GET['role']] ?? false);
+if (isset($_GET['role'])) {
+	$role = $types['user']['roles'][$_GET['role']] ?? false;
+} else {
+	$role['slug'] = 'user'; // default user role as unprivileged user
+}
 
 if ($role['slug']):
 ?>
