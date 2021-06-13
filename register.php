@@ -1,53 +1,62 @@
 <?php
-include_once __DIR__ . '/init.php';
-$error_op = '';
+include_once __DIR__.'/init.php';
+
+$error_op = false;
+$app_title = $menus['main']['logo']['name'] ?? '';
+$redirect_url = isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '';
+$form_email = $_POST['email'] ?? false;
+$form_mobile = $_POST['mobile'] ?? false;
+$form_password = $_POST['password'];
 
 if ($currentUser['id'] ?? false) {
     $user = $dash->get_content($currentUser['id']);
-    $auth->doAfterLogin($user, isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '');
+    $auth->doAfterLogin($user, $redirect_url);
 } elseif (
-    (($_POST['email'] ?? false) || ($_POST['mobile'] ?? false)) &&
-    ($_POST['password'] ?? false) &&
-    ($_POST['password'] == $_POST['confirm_password'])
+    ($form_email || $form_mobile) &&
+    $form_password &&
+    ($form_password == $_POST['confirm_password'])
 ) {
     $user_id = $auth->getUserId($_POST);
 
     if ($user_id) {
         $user = $dash->get_content($user_id);
     } else {
+		unset($_POST['confirm_password']);
+
         $user_id = $dash->push_content($_POST);
         $user = $dash->get_content($user_id);
     }
-    $auth->doAfterLogin($user, (isset($_POST['redirect_url']) ? $_POST['redirect_url'] : ''));
+    $auth->doAfterLogin($user, $redirect_url);
 } elseif ($_POST) {
-    $error_op = '<div class="alert alert-danger">Form not submitted. Please try again.</div>';
+    $error_op = true;
 }
 
 include_once __DIR__ . '/includes/_header.php';
 
-if (
-    ($types['webapp']['user_theme'] ?? false) &&
-    file_exists(THEME_PATH . '/pages/user/register.php')
-):
-    include_once THEME_PATH . '/pages/user/register.php';
-elseif (
-    ($types['webapp']['user_theme'] ?? false) &&
-    file_exists(THEME_PATH . '/user-register.php')
-):
-    include_once THEME_PATH . '/user-register.php';
+$use_custom_theme = $types['webapp']['user_theme'] ?? false;
+
+if ($use_custom_theme && file_exists(THEME_PATH.'/pages/user/register.php')):
+    include_once THEME_PATH.'/pages/user/register.php';
+elseif ($use_custom_theme && file_exists(THEME_PATH.'/user-register.php')):
+    include_once THEME_PATH.'/user-register.php';
 else:
 ?>
-<?=$error_op ?? ''?>
+<?php if ($error_op): ?>
+	<div class="alert alert-danger"
+		>Form not submitted. Please try again.
+	</div>
+<?php endif ?>
 
 <form class="form-user" method="post" action="/user/register">
-	<h2><?=($menus['main']['logo']['name'] ?? '')?></h2>
+	<h2><?= $app_title ?></h2>
 	<h4 class="my-3 font-weight-normal">
-		<span class="fas fa-lock"></span>&nbsp;Register
+		<span class="fas fa-lock"></span> Register
 	</h4>
 
 <?php
 $type = 'user';
-$role = ($types['user']['roles'][$_GET[role]] ?? false);
+$role = ($types['user']['roles'][$_GET['role']] ?? false);
+
 if ($role['slug']):
 ?>
     <input type="hidden" name="role_slug" value="<?=$role['slug']?>">
@@ -62,21 +71,36 @@ if ($role['slug']):
 		</label>
 	</div>
 
-	<button type="submit" class="btn btn-sm btn-primary btn-block my-1">Register</button>
-	<a class="btn btn-sm btn-outline-primary btn-block my-1" href="/user/login">Sign in</a>
+	<button type="submit" class="btn btn-sm btn-primary btn-block my-1"
+		>Register
+	</button>
+
+	<a href="/user/login" class="btn btn-sm btn-outline-primary btn-block my-1"
+		>Sign in
+	</a>
+
 	<p class="text-muted small my-2">
 		<a href="/user/forgot-password">
-			<span class="fas fa-key"></span>&nbsp;Forgot password?
+			<span class="fas fa-key"></span> Forgot password?
 		</a>
 	</p>
+
 	<p class="text-muted small my-5">
-		<a href="<?=BASE_URL?>">
-			<span class="fas fa-angle-double-left"></span>&nbsp;<?=($menus['main']['logo']['name'] ?? '')?>
+		<a href="/">
+			<span class="fas fa-angle-double-left"></span> <?= $app_title ?>
 		</a>
 	</p>
-	<p class="text-muted small my-5">&copy; <?php echo (date('Y') == '2020 ' ? date('Y') : '2020 - ' . date('Y')) . ($menus['main']['logo']['name'] ?? 'Wildfire'); ?></p>
+
+	<p class="text-muted small my-5">
+		&copy;&nbsp;
+		<?php $year = date('Y') ?>
+		<?= $year == '2020 ' ? $year : "2020 - $year" ?>&nbsp;
+		<?= $app_title ?? 'Wildfire' ?>
+	</p>
 </form>
 
-<?php endif?>
+<?php
+endif;
 
-<?php include_once __DIR__ . '/includes/_footer.php'?>
+include_once __DIR__.'/includes/_footer.php';
+?>

@@ -6,10 +6,22 @@ include_once __DIR__ . '/includes/_header.php';
 <div class="col-12 col-md-9 col-lg-6 mx-auto">
 
 <?php
-if ($_POST['email'] && !$_POST['password']) {
-	$usr = $dash->get_content($sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.type' = 'user' && `content`->'$.email' = '" . trim($_POST['email']) . "' ORDER BY `id` DESC LIMIT 1")[0]['id']);
+$form_email = trim($_POST['email']) ?? '';
+$form_password = $_POST['password'] ?? '';
+
+if ($form_email && !$form_password) {
+	$query = "SELECT id FROM data
+		WHERE
+			content->'$.type' = 'user'
+			AND
+			content->'$.email' = '$form_email'
+		ORDER BY id DESC LIMIT 1
+	";
+
+	$usr = $dash->get_content($sql->executeSQL($query)[0]['id']);
 
 	include_once __DIR__ . '/plugins/sendgrid/core-plugin.php';
+
 	$mailr = array();
 	$code = uniqid() . time();
 	$dash->push_content_meta($usr['id'], 'password_reset_code', $code);
