@@ -1,6 +1,9 @@
 <?php
 include_once __DIR__ . '/init.php';
-include_once __DIR__ . '/includes/_header.php';
+
+if (($type['webapp']['user_theme'] ?? false) && file_exists(THEME_PATH."/pages/user/forgot-password.php")) {
+	require_once __DIR__.'/includes/_header.php';
+}
 ?>
 
 <div class="col-12 col-md-9 col-lg-6 mx-auto">
@@ -133,6 +136,9 @@ include_once __DIR__ . '/includes/_header.php';
 				</a>
 			</div>
 	<?php
+		elseif (($types['webapp']['user_theme'] ?? false) && file_exists(THEME_PATH."/pages/user/forgot-password.php")):
+			require_once THEME_PATH."/pages/user/forgot-password.php";
+			die();
 		elseif (
 			($types['webapp']['user_theme'] ?? false) &&
 			file_exists(THEME_PATH . '/user-forgot-password.php')
