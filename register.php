@@ -23,6 +23,9 @@ if ($currentUser['id'] ?? false) {
     } else {
 		unset($_POST['confirm_password']);
 
+		if (!$_POST['user_id'])
+			$_POST['user_id']=$dash->get_unique_user_id();
+
         $user_id = $dash->push_content($_POST);
         $user = $dash->get_content($user_id);
     }
