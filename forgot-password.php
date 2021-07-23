@@ -1,7 +1,7 @@
 <?php
 include_once __DIR__ . '/init.php';
 
-if (($type['webapp']['user_theme'] ?? false) && file_exists(THEME_PATH."/pages/user/forgot-password.php")) {
+if (!($type['webapp']['user_theme'] ?? false) && !file_exists(THEME_PATH."/pages/user/forgot-password.php")) {
 	require_once __DIR__.'/includes/_header.php';
 }
 ?>
