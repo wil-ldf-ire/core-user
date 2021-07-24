@@ -22,7 +22,7 @@ else:
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title><?=(isset($headmeta_title) ? $headmeta_title . ' &raquo; ' : '') . 'Wildfire Entity'?></title>
+	<title><?=(isset($headmeta_title) ? $headmeta_title . ' &raquo; ' : '') . 'Dashboard'?></title>
 	<meta
 		name="description"
 		content="Access authorisation<?=isset($headmeta_title) ? ' for ' . $headmeta_title : ''?>"
