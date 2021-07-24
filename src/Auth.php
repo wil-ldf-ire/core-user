@@ -51,11 +51,11 @@ class Auth {
 		$types = self::$types;
 
 		$user_id = (string) json_decode($sql->executeSQL("
-            SELECT `content`->'$.user_id' `user_id` FROM `data`
+            SELECT `user_id` FROM `data`
             WHERE
             `content`->'$.api_key'='" . $api_key . "' &&
             `content`->'$.api_secret'='" . $api_secret . "' &&
-            `content`->'$.type'='api_key_secret'")[0]['user_id'], true);
+            `type`='api_key_secret' LIMIT 0,1")[0]['user_id'], true);
 
 		$user = $this->getUser($user_id);
 		$roleslug = $user['role_slug'];
@@ -75,9 +75,9 @@ class Auth {
 		$or = array();
 
 		if (is_int($val)) {
-			$q = $sql->executeSQL("SELECT * FROM `data` WHERE `id`='$val' && `content`->'$.type'='user' ORDER BY `id` DESC LIMIT 1");
+			$q = $sql->executeSQL("SELECT * FROM `data` WHERE `id`='$val' && `type`='user' ORDER BY `id` DESC LIMIT 0,1");
 		} else {
-			$q = $sql->executeSQL("SELECT * FROM `data` WHERE `content`->'$.user_id'='$val' && `content`->'$.type'='user' ORDER BY `id` DESC LIMIT 1");
+			$q = $sql->executeSQL("SELECT * FROM `data` WHERE `user_id`='$val' && `type`='user' ORDER BY `id` DESC LIMIT 0,1");
 		}
 
 		if ($q[0]['id']) {
@@ -152,9 +152,9 @@ class Auth {
 		$sql = new MySQL();
 
 		if (($post['email'] ?? false)) {
-			$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $post['email'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `content`->'$.type'='user' ORDER BY `id` DESC LIMIT 1");
+			$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $post['email'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `type`='user' ORDER BY `id` DESC LIMIT 0,1");
 		} elseif (($post['mobile'] ?? false)) {
-			$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $post['mobile'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `content`->'$.type'='user' ORDER BY `id` DESC LIMIT 1");
+			$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $post['mobile'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `type`='user' ORDER BY `id` DESC LIMIT 0,1");
 		}
 
 		return ($q[0]['id'] ?? false);

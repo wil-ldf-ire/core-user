@@ -14,7 +14,7 @@ endif;
 	if ($form_email && !$form_password):
 		$query = "SELECT id FROM data
 			WHERE
-				content->'$.type' = 'user'
+				type = 'user'
 				AND
 				content->'$.email' = '$form_email'
 			ORDER BY id DESC LIMIT 1
@@ -48,7 +48,7 @@ endif;
 		$password_reset_code = trim($_POST['password_reset_code'] ?? $_GET['code']);
 		$query_result = $sql->executeSQL("SELECT id FROM data
 			WHERE
-				content->'$.type' = 'user'
+				type = 'user'
 				AND
 				content->'$.password_reset_code' = '$password_reset_code'
 			ORDER BY id DESC LIMIT 1
@@ -120,7 +120,7 @@ endif;
 		trim($_POST['password']) &&
 		$_POST['password'] == $_POST['confirm_password']
 	):
-		$query_result = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.type' = 'user' && `content`->'$.password_reset_code' = '" . $_POST['password_reset_code'] . "' ORDER BY `id` DESC LIMIT 1");
+		$query_result = $sql->executeSQL("SELECT `id` FROM `data` WHERE `type` = 'user' && `content`->'$.password_reset_code' = '" . $_POST['password_reset_code'] . "' ORDER BY `id` DESC LIMIT 1");
 		$usr = $dash->get_content($query_result[0]['id']);
 
 		$dash->push_content_meta($usr['id'], 'password', md5($_POST['password']));
