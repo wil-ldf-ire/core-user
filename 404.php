@@ -1,8 +1,8 @@
 <?php
 include_once __DIR__ . '/init.php';
-include_once __DIR__ . '/includes/_header.php';
 
 if (!$currentUser['id']) {
+    ob_start();
     header('Location: /user/login');
     die();
 }
@@ -18,7 +18,7 @@ elseif (
 ):
     include_once THEME_PATH . '/user-' . $slug . '.php';
 else:
+    include_once __DIR__ . '/includes/_header.php';
     include_once THEME_PATH . '/404.php';
+    include_once __DIR__ . '/includes/_footer.php';
 endif;
-
-include_once __DIR__ . '/includes/_footer.php';
