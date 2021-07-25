@@ -4,7 +4,6 @@ include_once __DIR__ . '/init.php';
 if (!$currentUser['id']) {
     ob_start();
     header('Location: /user/login');
-    die();
 }
 
 if (
