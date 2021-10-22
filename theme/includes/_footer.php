@@ -16,10 +16,9 @@ elseif (
 	include_once THEME_PATH . '/user-footer.php';
 else:
 ?>
-	<script src="/vendor/wildfire/auth/plugins/jquery.min.js"></script>
-	<script src="/vendor/wildfire/auth/plugins/popper/popper.min.js"></script>
-	<script src="/vendor/wildfire/auth/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/vendor/wildfire/auth/theme/plugins/jquery.min.js"></script>
+	<script src="/vendor/wildfire/auth/theme/plugins/popper/popper.min.js"></script>
+	<script src="/vendor/wildfire/auth/theme/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 <?php endif;?>

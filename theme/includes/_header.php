@@ -28,11 +28,11 @@ else:
 		content="Access authorisation<?=isset($headmeta_title) ? ' for ' . $headmeta_title : ''?>"
 	>
 	<link rel="stylesheet" href="https://use.typekit.net/xkh7dxd.css">
-	<link rel="stylesheet" href="/vendor/wildfire/auth/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/vendor/wildfire/auth/css/wildfire.css">
-	<link rel="stylesheet" href="/vendor/wildfire/auth/plugins/fontawesome/css/all.min.css">
-	<link rel="stylesheet" href="/vendor/wildfire/auth/css/custom.css">
-  	<link rel="stylesheet" href="/vendor/wildfire/auth/css/user.css">
+	<link rel="stylesheet" href="/vendor/wildfire/auth/theme/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/vendor/wildfire/auth/theme/css/wildfire.css">
+	<link rel="stylesheet" href="/vendor/wildfire/auth/theme/plugins/fontawesome/css/all.min.css">
+	<link rel="stylesheet" href="/vendor/wildfire/auth/theme/css/custom.css">
+  	<link rel="stylesheet" href="/vendor/wildfire/auth/theme/css/user.css">
 </head>
 
 <body class="text-center">

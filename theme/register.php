@@ -69,7 +69,7 @@ else:
 		<input type="hidden" name="role_slug" value="<?=$role['slug']?>">
 		<?php endif?>
 
-		<?php include __DIR__ . '/../admin/form.php'?>
+		<?php include TRIBE_ROOT . '/vendor/wildfire/admin/form.php'?>
 
 		<div class="checkbox my-1 small">
 			<label>
