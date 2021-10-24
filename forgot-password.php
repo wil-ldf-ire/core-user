@@ -33,7 +33,7 @@ endif;
 		$mailr['body_text'] = $mailr['body_html'] = 'Please reset your password using the following link:<br>' . BASE_URL . '/user/forgot-password?code=' . $code;
 		$mailer->send_email($mailr);
 
-		echo '<div class="my-5 mx-auto alert alert-success">An email has been sent to you with link to reset password. Please check your email inbox and spam folder.</div>';
+		echo '<div class="my-5 mx-auto alert alert-success">An email has been sent to you with link to reset password. Please check your email inbox and spam folder.<br><br><a href="/">&larr;&nbsp;Go back</a></div>';
 	elseif (
 		isset($_GET['code']) ||
 		(
