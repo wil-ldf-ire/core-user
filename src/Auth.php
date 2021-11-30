@@ -1,11 +1,12 @@
 <?php
 namespace Wildfire\Auth;
-use Wildfire\Core\Dash as Dash;
-use Wildfire\Core\MySQL as MySQL;
+
+use \Wildfire\Core\Dash as Dash;
+use \Wildfire\Core\MySQL as MySQL;
 use \Firebase\JWT\JWT as JWT;
 
-class Auth {
-
+class Auth
+{
 	protected static $types;
 
 	public function __construct() {
@@ -103,7 +104,7 @@ class Auth {
 
 			try {
 				$decoded = JWT::decode($access_token, ($_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS']), array('HS256'));
-			} catch (Exception $e) {
+			} catch (\Exception $e) {
 				if ($e->getMessage() == "Expired token") {
 					return 'expired';
 
@@ -148,17 +149,39 @@ class Auth {
 		);
 	}
 
-	public function getUserId($post) {
-		$sql = new MySQL();
+	public function getUserId($post)
+	{
+		$user_identifier = null;
 
-		if (($post['email'] ?? false)) {
-			$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $post['email'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `type`='user' ORDER BY `id` DESC LIMIT 0,1");
-		} elseif (($post['mobile'] ?? false)) {
-			$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $post['mobile'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `type`='user' ORDER BY `id` DESC LIMIT 0,1");
+		if ($post['email'] ?? false) {
+			$user_identifier = "email = {$post['email']}";
+		} else if ($post['mobile'] ?? false) {
+			$user_identifier = "mobile = {$post['mobile']}";
 		}
 
-		return ($q[0]['id'] ?? false);
+		if (!$user_identifier) {
+			return false;
+		}
+
+		$sql = new MySQL();
+
+		$q = $sql->select('id,password')
+				->where('type = user')
+				->andWhere($user_identifier)
+				->orderBy('id')
+				->limit(1)
+				->get();
+
+		if (!(\sizeof($q) && $q[0]['id'])) {
+			return false;
+		}
+
+		try {
+			$dash = new Dash();
+			$is_match = $dash->doVerifyPassword($post['password'], $q[0]['password']);
+		} finally {
+			return $is_match ? $q[0]['id'] : false;
+		}
 	}
 }
-
 ?>
