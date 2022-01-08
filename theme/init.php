@@ -3,7 +3,7 @@ namespace Wildfire;
 
 $sql = new Core\MySQL();
 $dash = new Core\Dash();
-$admin = new Core\Admin();
+$admin = new Admin;
 $auth = new Auth\Auth();
 
 $type = 'user';
