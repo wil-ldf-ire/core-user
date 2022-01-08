@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . '/init.php';
+require_once __DIR__ . '/../init.php';
 
 if (!$currentUser['id']) {
     ob_start();
@@ -7,7 +7,7 @@ if (!$currentUser['id']) {
     die();
 }
 
-include_once __DIR__ . '/includes/_header.php';
+require_once __DIR__ . '/../includes/_header.php';
 
 if (($types['webapp']['user_theme'] ?? false)) {
     if (file_exists(THEME_PATH . '/pages/user/index.php')) {
@@ -22,4 +22,4 @@ if (($types['webapp']['user_theme'] ?? false)) {
     include_once __DIR__ . '/index.php';
 }
 
-include_once __DIR__ . '/includes/_footer.php';
+require_once __DIR__ . '/includes/_footer.php';

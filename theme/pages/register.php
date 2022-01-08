@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__.'/init.php';
+require_once __DIR__.'/../init.php';
 
 $error_op = false;
 $app_title = $menus['main']['logo']['name'] ?? '';
@@ -42,7 +42,7 @@ elseif ($use_custom_theme && file_exists(THEME_PATH.'/user-register.php')):
     include_once THEME_PATH.'/user-register.php';
 else:
 	// if custom user theme pages don't exist
-	include_once __DIR__ . '/includes/_header.php';
+	require_once __DIR__ . '/../includes/_header.php';
 ?>
 	<?php if ($error_op): ?>
 		<div class="alert alert-danger"
@@ -69,7 +69,7 @@ else:
 		<input type="hidden" name="role_slug" value="<?=$role['slug']?>">
 		<?php endif?>
 
-		<?php include TRIBE_ROOT . '/vendor/wildfire/admin/form.php'?>
+		<?php include TRIBE_ROOT . '/vendor/wildfire/admin/theme/includes/form/form.php'?>
 
 		<div class="checkbox my-1 small">
 			<label>
@@ -107,6 +107,6 @@ else:
 	</form>
 
 <?php
-	include_once __DIR__.'/includes/_footer.php';
+	require_once __DIR__.'/../includes/_footer.php';
 endif; // custom user theme
 ?>

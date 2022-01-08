@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/init.php';
+require_once __DIR__.'/../init.php';
 
 if (
     isset($_GET['action']) &&
@@ -35,7 +35,7 @@ if ($use_custom_theme && file_exists(THEME_PATH.'/pages/user/login.php')):
     elseif ($use_custom_theme && file_exists(THEME_PATH.'/user-login.php')):
         require_once THEME_PATH.'/user-login.php';
     else: // if custom user theme doesn't exitst
-        require_once __DIR__.'/includes/_header.php';
+        require_once __DIR__.'/../includes/_header.php';
 ?>
 
     <form class="form-user" method="post" action="/user/login">
@@ -113,6 +113,6 @@ if ($use_custom_theme && file_exists(THEME_PATH.'/pages/user/login.php')):
     </form>
 
 <?php
-    require_once __DIR__.'/includes/_footer.php';
+    require_once __DIR__.'/../includes/_footer.php';
 endif; // custom theme override
 ?>

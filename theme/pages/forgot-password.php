@@ -1,8 +1,8 @@
 <?php
-include_once __DIR__ . '/init.php';
+require_once __DIR__ . '/../init.php';
 
 if (!($type['webapp']['user_theme'] ?? false) && !file_exists(THEME_PATH."/pages/user/forgot-password.php")):
-	require_once __DIR__.'/includes/_header.php';
+	require_once __DIR__.'/../includes/_header.php';
 ?>
 
 <div class="col-12 col-md-9 col-lg-6 mx-auto">
@@ -168,4 +168,4 @@ endif;
     <?php endif ?>
 </div>
 
-<?php include_once __DIR__.'/includes/_footer.php';?>
+<?php require_once __DIR__.'/../includes/_footer.php';?>
