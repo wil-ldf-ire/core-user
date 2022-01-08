@@ -1,8 +1,9 @@
 <?php
-namespace Wildfire\Auth;
-use Wildfire\Core\Dash as Dash;
-use Wildfire\Core\MySQL as MySQL;
-use \Firebase\JWT\JWT as JWT;
+namespace Wildfire;
+
+use \Wildfire\Core\Dash;
+use \Wildfire\Core\MySQL;
+use \Firebase\JWT\JWT;
 
 class Auth {
 

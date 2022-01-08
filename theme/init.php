@@ -4,7 +4,7 @@ namespace Wildfire;
 $sql = new Core\MySQL();
 $dash = new Core\Dash();
 $admin = new Admin;
-$auth = new Auth\Auth();
+$auth = new Auth;
 
 $type = 'user';
 $types = $dash->getTypes();
