@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../init.php';
 
-$use_custom_theme = $type['webapp']['user_theme'] ?? false;
+$use_custom_theme = $types['webapp']['user_theme'] ?? false;
 
 $form['email'] = trim($_POST['email'] ?? false);
 $form['password'] = trim($_POST['password'] ?? false);
