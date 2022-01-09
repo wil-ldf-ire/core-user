@@ -64,12 +64,12 @@ else:
 				$role['slug'] = 'user'; // default user role as unprivileged user
 			}
 
-			if ($role['slug']):
+			if ($role['slug']) {
+				echo "<input type='hidden' name='role_slug' value='{$role['slug']}'>";
+			}
 		?>
-		<input type="hidden" name="role_slug" value="<?=$role['slug']?>">
-		<?php endif?>
 
-		<?php include TRIBE_ROOT . '/vendor/wildfire/admin/theme/includes/form/form.php'?>
+		<?php require TRIBE_ROOT . '/vendor/wildfire/admin/theme/includes/form/form.php'?>
 
 		<div class="checkbox my-1 small">
 			<label>
