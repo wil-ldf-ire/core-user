@@ -17,7 +17,7 @@ if ($form['email'] && !$form['password']) {
     $query = "SELECT id FROM data WHERE type='user' AND content->'$.email'='{$form['email']}' ORDER BY id DESC LIMIT 1";
     $_id = $sql->executeSQL($query)[0]['id'];
 
-    $usr = $dash->get_content($_id);
+    $usr = $dash->getObject($_id);
 
     require_once __DIR__ . '/../../plugins/sendgrid/core-plugin.php';
 
@@ -36,7 +36,7 @@ if ($form['email'] && !$form['password']) {
 } else if ($form['password']) { // set new password
 	$_id = $sql->executeSQL("SELECT id FROM data WHERE type='user' AND content->'$.password_reset_code'='{$_POST['password_reset_code']}' ORDER BY id DESC LIMIT 1")[0]['id'];
 
-	$usr = $dash->get_content($_id);
+	$usr = $dash->getObject($_id);
 
 	if (($form['password'] != $form['c_password'])) {
 		$password_mismatch = true;
@@ -50,7 +50,7 @@ if ($form['email'] && !$form['password']) {
 	$_id = $sql->executeSQL("SELECT id FROM data where type='user' AND content->'$.password_reset_code'='{$_GET['code']}' ORDER BY id DESC LIMIT 1")[0]['id'] ?? null;
 
 	if ($_id) {
-		$usr = $dash->get_content($_id);
+		$usr = $dash->getObject($_id);
 	}
 
 	$is_code_valid = $_id ? true : false;
