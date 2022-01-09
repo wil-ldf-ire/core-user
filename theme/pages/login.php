@@ -29,15 +29,16 @@ if (($form_email || $form_mobile) && $form_password) {
 
 
 $use_custom_theme = $types['webapp']['user_theme'] ?? false;
+$new_login_view_path = THEME_PATH."/pages/user/login.php";
+$old_login_view_path = THEME_PATH."/user-login.php";
 
-if ($use_custom_theme && file_exists(THEME_PATH.'/pages/user/login.php')):
-    require_once THEME_PATH.'/pages/user/login.php';
-    elseif ($use_custom_theme && file_exists(THEME_PATH.'/user-login.php')):
-        require_once THEME_PATH.'/user-login.php';
-    else: // if custom user theme doesn't exitst
-        require_once __DIR__.'/../includes/_header.php';
+if ($use_custom_theme && file_exists($new_login_view_path)):
+    require_once $new_login_view_path;
+elseif ($use_custom_theme && file_exists($old_login_view_path)):
+    require_once $old_login_view_path;
+else: // if custom user theme doesn't exitst
+    require_once __DIR__.'/../includes/_header.php';
 ?>
-
     <form class="form-user" method="post" action="/user/login">
         <h2>
             <?= $menus['main']['logo']['name'] ?? '' ?>

@@ -1,18 +1,11 @@
 <?php
-if (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/pages/user/_header.php')
-):
+$use_custom_theme = $types['webapp']['user_theme'] ?? false;
+
+if ($use_custom_theme && file_exists(THEME_PATH . '/pages/user/_header.php')):
 	include_once THEME_PATH . '/pages/user/_header.php';
-elseif (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/pages/user/header.php')
-):
+elseif ($use_custom_theme && file_exists(THEME_PATH . '/pages/user/header.php')):
 	include_once THEME_PATH . '/pages/user/header.php';
-elseif (
-	($types['webapp']['user_theme'] ?? false) &&
-	file_exists(THEME_PATH . '/user-header.php')
-):
+elseif ($use_custom_theme && file_exists(THEME_PATH . '/user-header.php')):
 	include_once THEME_PATH . '/user-header.php';
 else:
 ?>
