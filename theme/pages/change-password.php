@@ -9,7 +9,7 @@ if (!$currentUser) {
     header('Location: /user/login');
 }
 
-if ($_POST['password'] && ($_POST['password'] == $_POST['cpassword'])) {
+if (isset($_POST['password']) && ($_POST['password'] == $_POST['cpassword'])) {
     $dash->push_content_meta($currentUser['id'], 'password', md5($_POST['password']));
 
     //for admin and crew (staff)
