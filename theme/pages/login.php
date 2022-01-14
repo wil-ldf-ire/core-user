@@ -19,11 +19,11 @@ if (($form_email || $form_mobile) && $form_password) {
     $user_id = $auth->getUserId($_POST);
 
     if ($user_id) {
-        $user = $dash->get_content($user_id);
+        $user = $dash->getObject($user_id);
         $auth->doAfterLogin($user, $redirect_url);
     }
 } elseif ($currentUser['id'] ?? false) {
-    $user = $dash->get_content($currentUser['id']);
+    $user = $dash->getObject($currentUser['id']);
     $auth->doAfterLogin($user, $redirect_url);
 }
 
