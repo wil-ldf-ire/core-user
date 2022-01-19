@@ -2,10 +2,7 @@
 require_once __DIR__.'/../init.php';
 
 if (($_GET['action'] ?? false) == 'exit') {
-    $auth = new \Wildfire\Auth;
-    $auth->endSession();
-
-    header("Location: /user/login");
+    header("Location: /user/logout");
     die();
 }
 
