@@ -4,47 +4,69 @@ namespace Wildfire;
 use \Wildfire\Core\Dash;
 use \Wildfire\Core\MySQL;
 use \Firebase\JWT\JWT;
+use \Wildfire\Core\Console as console;
 
 class Auth {
 
 	protected static $types;
+	public $cookie_options;
 
 	public function __construct() {
 		$dash = new Dash();
 		self::$types = $dash->get_types(ABSOLUTE_PATH . '/config/types.json');
+		$_secure = ($_ENV['SSL'] == 'true');
+
+		$this->cookie_options = [
+			'expires' => 'Session',
+			'path' => '/',
+			'secure' => $_secure,
+			'httponly' => true,
+			'samesite' => 'Lax'
+		];
 	}
 
-	public function doAfterLogin($user, $redirect_url = '') {
+	public function doAfterLogin($user, $redirect_url = '', $remember) {
 		global $_SESSION;
 
 		$roleslug = $user['role_slug'];
 		$types = self::$types;
-
 		$user['role'] = $types['user']['roles'][$roleslug]['role'];
 
 		//for admin and crew (staff)
 		if ($types['user']['roles'][$roleslug]['role'] == 'admin' || $types['user']['roles'][$roleslug]['role'] == 'crew') {
 			$user['wildfire_dashboard_access'] = 1;
-			$this->setCurrentUser($user);
+			$token = $this->setCurrentUser($user);
 
-			ob_start();
-			header('Location: ' . (trim($redirect_url) ? trim($redirect_url) : '/admin'));
+			$_redirect = 'Location: ' . (trim($redirect_url) ?: '/admin');
 		}
 
 		//for members
 		elseif ($types['user']['roles'][$roleslug]['role'] == 'member') {
 			$user['wildfire_dashboard_access'] = 0;
-			$this->setCurrentUser($user);
+			$token = $this->setCurrentUser($user);
 
-			ob_start();
-			header('Location: ' . (trim($redirect_url) ? trim($redirect_url) : '/user'));
+			$_redirect = 'Location: ' . (trim($redirect_url) ?: '/user');
 		}
 
 		//for visitors and anybody else
 		else {
-			ob_start();
-			header('Location: ' . (trim($redirect_url) ? trim($redirect_url) : '/'));
+			$_redirect = 'Location: ' . (trim($redirect_url) ?: '/');
 		}
+
+		$access_token = "{$token['token_type']} {$token['access_token']}";
+
+		// setting http cookie
+		$cookie_options = $this->cookie_options;
+		if ($remember) {
+			$cookie_options['expires'] = strtotime('+45 days');
+			setcookie('access_token', $access_token, $cookie_options);
+		} else {
+			setcookie('access_token', $access_token, $cookie_options);
+		}
+
+		ob_start();
+		header($_redirect);
+		ob_end_flush();
 	}
 
 	public function getApiAccess($api_key, $api_secret) {
@@ -96,27 +118,29 @@ class Auth {
 	public function getCurrentUser($access_token = '') {
 		global $_SESSION, $_ENV;
 
-		if (!$access_token) {
-			$access_token = $_SESSION['access_token'] ?? false;
+		$token = $_COOKIE['access_token'] ?? null;
+
+		if (!$token) {
+			return false;
 		}
 
-		if ($access_token) {
+		$token = str_replace('Bearer ', '', $token);
 
-			try {
-				$decoded = JWT::decode($access_token, ($_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS']), array('HS256'));
-			} catch (Exception $e) {
-				if ($e->getMessage() == "Expired token") {
-					return 'expired';
+		try {
+			$_jwt_secret = $_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS'];
+			$decoded = (array) JWT::decode($token, $_jwt_secret, ['HS256']);
 
-				} else {
-					return false;
-				}
+			if (isset($_SESSION['user_id'])) {
+				return ($_SESSION['user_id'] == $decoded['user_id']) ? $_SESSION : false;
+			} else {
+				$dash = new Dash;
+				$user = $dash->getObject(['type' => 'user', 'slug' => strtolower($decoded['user_id'])]);
+				$_SESSION = $user;
+
+				return $_SESSION;
 			}
-
-			return (array) $decoded;
-
-		} else {
-			return false;
+		} catch (Exception $e) {
+			return ($e->getMessage() == "Expired token") ? 'expired' : false;
 		}
 
 	}
@@ -131,16 +155,23 @@ class Auth {
 			"nbf" => time(), //"nbf" (Not Before) Claim
 		);
 
+		$_user = [
+			"name" => $user['name'],
+			"user_id" => $user['user_id']
+		];
+
+		// "exp" (Expiration Time) Claim
 		if ($timeout) {
 			$payload["exp"] = time() + $timeout;
 		}
-		// "exp" (Expiration Time) Claim
 
-		$payload = array_merge($payload, $user);
+		$payload = array_merge($_user, $payload);
+		unset($_user);
 
-		$jwt_token = JWT::encode($payload, ($_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS']));
+		$jwt_secret = $_ENV['TRIBE_API_SECRET_KEY'] ?? $_ENV['DB_PASS'];
+		$jwt_token = JWT::encode($payload, $jwt_secret);
 
-		$_SESSION['access_token'] = $jwt_token;
+		$_SESSION = $user;
 
 		return array(
 			"access_token" => $jwt_token,
@@ -160,6 +191,11 @@ class Auth {
 
 		return ($q[0]['id'] ?? false);
 	}
-}
 
-?>
+	public function endSession() {
+		$cookie_options = $this->cookie_options;
+		session_destroy();
+
+		return setcookie('access_token', '', $cookie_options);
+	}
+}

@@ -1,18 +1,18 @@
 <?php
 require_once __DIR__.'/../init.php';
 
-if (
-    isset($_GET['action']) &&
-    $_GET['action'] == 'exit'
-) {
-    session_destroy();
-    ob_start();
+if (($_GET['action'] ?? false) == 'exit') {
+    $auth = new \Wildfire\Auth;
+    $auth->endSession();
+
     header("Location: /user/login");
+    die();
 }
 
 $form_email = $_POST['email'] ?? false;
 $form_mobile = $_POST['mobile'] ?? false;
 $form_password = $_POST['password'] ?? false;
+$_remember = $_POST['remember'] ?? false;
 $redirect_url = isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '';
 
 if (($form_email || $form_mobile) && $form_password) {
@@ -20,11 +20,11 @@ if (($form_email || $form_mobile) && $form_password) {
 
     if ($user_id) {
         $user = $dash->getObject($user_id);
-        $auth->doAfterLogin($user, $redirect_url);
+        $auth->doAfterLogin($user, $redirect_url, $_remember);
     }
 } elseif ($currentUser['id'] ?? false) {
     $user = $dash->getObject($currentUser['id']);
-    $auth->doAfterLogin($user, $redirect_url);
+    $auth->doAfterLogin($user, $redirect_url, $_remember);
 }
 
 
@@ -78,7 +78,7 @@ else: // if custom user theme doesn't exitst
 
         <div class="checkbox my-1 small">
             <label>
-                <input type="checkbox" class="my-0" value="remember-me"> Remember me
+                <input type="checkbox" name="remember" class="my-0" value="true"> Remember me
             </label>
         </div>
 
