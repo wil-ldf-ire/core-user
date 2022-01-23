@@ -22,5 +22,5 @@ elseif (
 ):
     include_once THEME_PATH . '/user-single.php';
 else:
-    include_once THEME_PATH . '/error_pages/error_404.php';
+    include_once THEME_PATH . '/pages/404.php';
 endif;
