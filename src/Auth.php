@@ -25,7 +25,7 @@ class Auth {
 		];
 	}
 
-	public function doAfterLogin($user, $redirect_url = '', $remember) {
+	public function doAfterLogin($user, $redirect_url = '', $remember = false) {
 		global $_SESSION;
 
 		$roleslug = $user['role_slug'];
@@ -33,7 +33,7 @@ class Auth {
 		$user['role'] = $types['user']['roles'][$roleslug]['role'];
 
 		//for admin and crew (staff)
-		if ($types['user']['roles'][$roleslug]['role'] == 'admin' || $types['user']['roles'][$roleslug]['role'] == 'crew') {
+		if ($user['role'] == 'admin' || $user['role'] == 'crew') {
 			$user['wildfire_dashboard_access'] = 1;
 			$token = $this->setCurrentUser($user);
 
@@ -41,7 +41,7 @@ class Auth {
 		}
 
 		//for members
-		elseif ($types['user']['roles'][$roleslug]['role'] == 'member') {
+		elseif ($user['role'] == 'member') {
 			$user['wildfire_dashboard_access'] = 0;
 			$token = $this->setCurrentUser($user);
 
@@ -118,7 +118,7 @@ class Auth {
 	public function getCurrentUser($access_token = '') {
 		global $_SESSION, $_ENV;
 
-		$token = $_COOKIE['access_token'] ?? null;
+		$token = trim($_COOKIE['access_token']) ?? null;
 
 		if (!$token) {
 			return false;
