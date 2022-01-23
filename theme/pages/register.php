@@ -8,6 +8,8 @@ $form_email = $_POST['email'] ?? false;
 $form_mobile = $_POST['mobile'] ?? false;
 $form_password = $_POST['password'] ?? false;
 
+$override_default_role = isset($types['user']['default_role']);
+
 if ($currentUser['id'] ?? false) {
     $user = $dash->get_content($currentUser['id']);
     $auth->doAfterLogin($user, $redirect_url);
@@ -23,12 +25,20 @@ if ($currentUser['id'] ?? false) {
     } else {
 		unset($_POST['confirm_password']);
 
-		if (!$_POST['user_id'])
-			$_POST['user_id']=$dash->get_unique_user_id();
+		if ($override_default_role) {
+			$_default_role = $types['user']['default_role'];
+			$_POST['role'] = $types['user']['roles'][$_default_role]['role'];
+			$_POST['role_slug'] = $types['user']['roles'][$_default_role]['slug'];
+		}
 
-        $user_id = $dash->push_content($_POST);
-        $user = $dash->get_content($user_id);
+		$_POST['type'] = 'user';
+		$_POST['user_id'] = $_POST['user_id'] ?? $dash->get_unique_user_id();
+		$_POST['slug'] = strtolower($_POST['user_id']);
+
+        $user_id = $dash->pushObject($_POST);
+        $user = $dash->getObject($user_id);
     }
+
     $auth->doAfterLogin($user, $redirect_url);
 } elseif ($_POST) {
     $error_op = true;
