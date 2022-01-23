@@ -180,16 +180,25 @@ class Auth {
 		);
 	}
 
-	public function getUserId($post) {
+	public function getUserId(array $post) {
 		$sql = new MySQL();
 
-		if (($post['email'] ?? false)) {
-			$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.email'='" . $post['email'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `type`='user' ORDER BY `id` DESC LIMIT 0,1");
-		} elseif (($post['mobile'] ?? false)) {
-			$q = $sql->executeSQL("SELECT `id` FROM `data` WHERE `content`->'$.mobile'='" . $post['mobile'] . "' && `content`->'$.password'='" . md5($post['password']) . "' && `type`='user' ORDER BY `id` DESC LIMIT 0,1");
+		$_user = false;
+		if ($post['email'] ?? false) {
+			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.email'='{$post['email']}' ORDER BY id DESC LIMIT 0,1");
+		} else if ($post['mobile'] ?? false) {
+			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.mobile'='{$post['mobile']}' ORDER BY id DESC LIMIT 0,1");
+		} else if ($post['uname'] ?? false) {
+			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.uname'='{$post['uname']}' ORDER BY id DESC LIMIT 0,1");
 		}
 
-		return ($q[0]['id'] ?? false);
+		if (!$_user) return false;
+
+		$_user = $_user[0];
+
+		$is_valid = $this->verify_password($post['password'], $_user['password']);
+
+		return $is_valid ? $_user['id'] : false;
 	}
 
 	public function endSession() {
@@ -197,5 +206,21 @@ class Auth {
 		session_destroy();
 
 		return setcookie('access_token', '', $cookie_options);
+	}
+
+	public function secure_password (string $password)
+	{
+		return \password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+	}
+
+	public function verify_password(string $password, string $hash): bool
+	{
+		$is_valid = \password_verify($password, $hash);
+
+		if (!$is_valid) {
+			$is_valid = md5($password) == $hash;
+		}
+
+		return $is_valid;
 	}
 }
