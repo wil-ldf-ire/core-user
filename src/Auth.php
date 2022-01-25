@@ -118,11 +118,9 @@ class Auth {
 	public function getCurrentUser($access_token = '') {
 		global $_SESSION, $_ENV;
 
-		$token = trim($_COOKIE['access_token']) ?? null;
-
-		if (!$token) {
-			return false;
-		}
+		$token = $_COOKIE['access_token'] ?? '';
+		$token = trim($token);
+		if (!$token) return false;
 
 		$token = str_replace('Bearer ', '', $token);
 
