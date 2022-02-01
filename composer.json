@@ -1,5 +1,6 @@
 {
     "name": "wildfire/auth",
+    "description": "Auth package for Tribe (v2.0.10)",
     "repositories": {
         "wildfire/core": {
             "type": "git",
