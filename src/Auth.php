@@ -183,11 +183,11 @@ class Auth {
 
 		$_user = false;
 		if ($post['email'] ?? false) {
-			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.email'='{$post['email']}' ORDER BY id ASC LIMIT 0,1");
+			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.email'='{$post['email']}' AND content->>'$.password'!='' ORDER BY id ASC LIMIT 1");
 		} else if ($post['mobile'] ?? false) {
-			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.mobile'='{$post['mobile']}' ORDER BY id ASC LIMIT 0,1");
+			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.mobile'='{$post['mobile']}' AND content->>'$.password'!='' ORDER BY id ASC LIMIT 1");
 		} else if ($post['uname'] ?? false) {
-			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.uname'='{$post['uname']}' ORDER BY id ASC LIMIT 0,1");
+			$_user = $sql->executeSQL("SELECT id,content->>'$.password' as 'password' FROM data WHERE `type`='user' && content->'$.uname'='{$post['uname']}' AND content->>'$.password'!='' ORDER BY id ASC LIMIT 1");
 		}
 
 		if (!$_user) return false;
