@@ -154,7 +154,7 @@ class Auth {
 		);
 
 		$_user = [
-			"name" => $user['name'],
+			"name" => $user['name'] ?? null,
 			"user_id" => $user['user_id']
 		];
 
