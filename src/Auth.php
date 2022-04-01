@@ -137,7 +137,7 @@ class Auth {
 
 				return $_SESSION;
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return ($e->getMessage() == "Expired token") ? 'expired' : false;
 		}
 
