@@ -4,7 +4,6 @@ namespace Wildfire;
 use \Wildfire\Core\Dash;
 use \Wildfire\Core\MySQL;
 use \Firebase\JWT\JWT;
-use \Wildfire\Core\Console as console;
 
 class Auth {
 
