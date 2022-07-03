@@ -66,7 +66,8 @@ class Auth
         }
 
         ob_start();
-        header($_redirect);
+        if ($redirect_url)
+            header($_redirect);
         ob_end_flush();
     }
 
