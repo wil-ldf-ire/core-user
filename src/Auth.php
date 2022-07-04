@@ -25,7 +25,7 @@ class Auth
         ];
     }
 
-    public function doAfterLogin($user, $redirect_url = '', $remember = false)
+    public function doAfterLogin($user, $redirect_url = '', $remember = false, $do_not_redirect = false)
     {
         global $_SESSION;
 
@@ -66,8 +66,10 @@ class Auth
         }
 
         ob_start();
-        if ($redirect_url)
+
+        if (!$do_not_redirect)
             header($_redirect);
+        
         ob_end_flush();
     }
 
