@@ -10,7 +10,7 @@ $form_email = $_POST['email'] ?? false;
 $form_mobile = $_POST['mobile'] ?? false;
 $form_password = $_POST['password'] ?? false;
 $_remember = $_POST['remember'] ?? false;
-$redirect_url = isset($_POST['redirect_url']) ? $_POST['redirect_url'] : '';
+$redirect_url = (isset($_POST['redirect_url']) && trim($_POST['redirect_url'])) ? trim($_POST['redirect_url']) : '';
 
 if (($form_email || $form_mobile) && $form_password) {
     $user_id = $auth->getUserId($_POST);

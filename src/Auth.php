@@ -67,7 +67,7 @@ class Auth
 
         ob_start();
 
-        if (!$do_not_redirect)
+        if ($do_not_redirect !== true)
             header($_redirect);
         
         ob_end_flush();
