@@ -1,19 +1,14 @@
 {
-    "name": "wildfire/auth",
-    "description": "Auth package for Tribe (v2.0.10)",
+    "name": "tribe/auth",
+    "description": "Auth package for Tribe (v3)",
     "repositories": {
-        "wildfire/core": {
+        "tribe/core": {
             "type": "git",
-            "url": "https://github.com/wil-ldf-ire/core.git"
+            "url": "https://github.com/wil-ldf-ire/tribe-core.git"
         }
     },
     "require": {
     	"firebase/php-jwt": "^5.2",
-    	"wildfire/core": "^3.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Wildfire\\": "src/"
-        }
+    	"tribe/core": "^4.0"
     }
 }
