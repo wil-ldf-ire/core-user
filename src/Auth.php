@@ -1,8 +1,8 @@
 <?php
-namespace Wildfire;
+namespace Tribe;
 
-use \Wildfire\Core\Dash;
-use \Wildfire\Core\MySQL;
+use \Tribe\Core;
+use \Tribe\MySQL;
 use \Firebase\JWT\JWT;
 
 class Auth
@@ -12,8 +12,8 @@ class Auth
 
     public function __construct()
     {
-        $dash = new Dash();
-        self::$types = $dash->get_types(ABSOLUTE_PATH . '/config/types.json');
+        $core = new Core();
+        self::$types = $core->get_types(ABSOLUTE_PATH . '/config/types.json');
         $_secure = ($_ENV['SSL'] == 'true');
 
         $this->cookie_options = [
@@ -35,7 +35,7 @@ class Auth
 
         //for admin and crew (staff)
         if ($user['role'] == 'admin' || $user['role'] == 'crew') {
-            $user['wildfire_dashboard_access'] = 1;
+            $user['junction_access'] = 1;
             $token = $this->setCurrentUser($user);
 
             $_redirect = 'Location: ' . (trim($redirect_url) ?: '/admin');
@@ -43,7 +43,7 @@ class Auth
 
         //for members
         elseif ($user['role'] == 'member') {
-            $user['wildfire_dashboard_access'] = 0;
+            $user['junction_access'] = 0;
             $token = $this->setCurrentUser($user);
 
             $_redirect = 'Location: ' . (trim($redirect_url) ?: '/user');
@@ -138,8 +138,8 @@ class Auth
             if (isset($_SESSION['user_id'])) {
                 return ($_SESSION['user_id'] == $decoded['user_id']) ? $_SESSION : false;
             } else {
-                $dash = new Dash;
-                $user = $dash->getObject(['type' => 'user', 'slug' => strtolower($decoded['user_id'])]);
+                $core = new Core;
+                $user = $core->getObject(['type' => 'user', 'slug' => strtolower($decoded['user_id'])]);
                 $_SESSION = $user;
 
                 return $_SESSION;

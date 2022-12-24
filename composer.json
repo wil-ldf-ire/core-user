@@ -10,5 +10,10 @@
     "require": {
     	"firebase/php-jwt": "^5.2",
     	"tribe/core": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tribe\\": "src/"
+        }
     }
 }
