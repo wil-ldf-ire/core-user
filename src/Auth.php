@@ -25,6 +25,20 @@ class Auth
         ];
     }
 
+    public function getUniqueUserID()
+    {
+        $sql = new MySQL();
+        $bytes = strtoupper(bin2hex(random_bytes(3)));
+
+        $q = $sql->executeSQL("SELECT id FROM data WHERE user_id='$bytes' ORDER BY id DESC LIMIT 0,1");
+
+        if ($q && $q[0]['id']) {
+            return $this->getUniqueUserID();
+        } else {
+            return $bytes;
+        }
+    }
+
     public function doAfterLogin($user, $redirect_url = '', $remember = false, $do_not_redirect = false)
     {
         global $_SESSION;
