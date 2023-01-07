@@ -2,6 +2,7 @@
 namespace Tribe;
 
 use \Tribe\Core;
+use \Tribe\Config;
 use \Tribe\MySQL;
 use \Firebase\JWT\JWT;
 
@@ -12,8 +13,8 @@ class Auth
 
     public function __construct()
     {
-        $core = new Core();
-        self::$types = $core->get_types(ABSOLUTE_PATH . '/config/types.json');
+        $config = new Config();
+        self::$types = $config->getTypes(ABSOLUTE_PATH . '/config/types.json');
         $_secure = ($_ENV['SSL'] == 'true');
 
         $this->cookie_options = [
