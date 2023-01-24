@@ -1,12 +1,7 @@
 {
     "name": "tribe/auth",
     "description": "Auth package for Tribe (v3)",
-    "repositories": {
-        "tribe/core": {
-            "type": "git",
-            "url": "https://github.com/wil-ldf-ire/tribe-core.git"
-        }
-    },
+    "license": "GPL-3.0-or-later",
     "require": {
     	"firebase/php-jwt": "^6.3",
     	"tribe/core": "^4.0"
