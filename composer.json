@@ -3,7 +3,7 @@
     "description": "Auth package for Tribe (v3)",
     "license": "GPL-3.0-or-later",
     "require": {
-    	"firebase/php-jwt": "^5.2",
+    	"firebase/php-jwt": ">=5.2",
     	"tribe/core": "^4.0"
     },
     "autoload": {
