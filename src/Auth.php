@@ -14,7 +14,7 @@ class Auth
     public function __construct()
     {
         $config = new Config();
-        self::$types = $config->getTypes(ABSOLUTE_PATH . '/config/types.json');
+        self::$types = $config->getTypes();
         $_secure = ($_ENV['SSL'] == 'true');
 
         $this->cookie_options = [
